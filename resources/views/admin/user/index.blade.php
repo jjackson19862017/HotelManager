@@ -14,7 +14,7 @@
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>Username</th>
+
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Actions</th>
@@ -24,8 +24,8 @@
                             <tbody>
                                 @foreach ($users as $user)
                                     <tr>
-                                        <td><a href="{{route('user.profile.show',$user->id)}}"><i class="fas fa-edit"></i> {{$user->username}}</a></td>
-                                        <td>{{$user->name}} - {{$user->last_login_at}}</td>
+                                        <td><a class="btn btn-success btn-sm"href="{{route('user.profile.show',$user->id)}}"><i class="fas fa-edit"></i></a>
+                                        {{$user->name}} - {{$user->last_login_at}}</td>
                                         <td><a href="mailto:{{$user->email}}">{{$user->email}}</td>
                                         @method('DELETE')
                                             <td>
@@ -38,6 +38,7 @@
                                                 </form>
                                             </td>
                                     </tr>
+
 
                                 @endforeach
                             </tbody>

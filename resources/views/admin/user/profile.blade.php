@@ -42,9 +42,13 @@
                                            {{$user_role->name}}
                                         @endif
                                     @endforeach</td>
-                                <td><a name="" id="" class="btn btn-success btn-sm"
+                                <td>
+                                    @if(auth()->user()->userHasRole('super')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('owner'))
+                                    <a name="" id="" class="btn btn-success btn-sm"
                                        data-toggle="modal" data-target="#changeRoleModel"
-                                       role="button"><i class="fas fa-edit"></i></a></td>
+                                       role="button"><i class="fas fa-edit"></i></a>
+                                    @endif
+                                </td>
                             </tr>
                             </tbody>
                         </table>

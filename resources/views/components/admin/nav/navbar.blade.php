@@ -18,7 +18,9 @@
     </form>-->
     <!-- Navbar-->
     <ul class="navbar-nav ml-auto ml-md-0">
+        @if(auth()->user()->userHasRole('super')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('owner'))
         <x-admin.nav.setup-navbar/>
+        @endif
         <x-admin.nav.profile/>
     </ul>
 </nav>

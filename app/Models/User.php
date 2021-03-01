@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -60,6 +61,7 @@ class User extends Authenticatable implements Auditable
 
 
 
+
     public function setPasswordAttribute($password){
         if ( $password !== null & $password !== "" )
         {
@@ -90,13 +92,13 @@ class User extends Authenticatable implements Auditable
         return Carbon::parse($date)->diffForHumans();
     }
 
-    public function permissions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function permissions(): BelongsToMany
     {
         // Creates a Many to Many relationship with User <-> Permission
         return $this->belongsToMany(Permission::class);
     }
 
-    public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function roles(): BelongsToMany
     {
         // Creates a Many to Many relationship with Role <-> User
         return $this->belongsToMany(Role::class);

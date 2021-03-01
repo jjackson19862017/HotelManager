@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class OwnerAndAbove
+class Admin
 {
     /**
      * Handle an incoming request.
@@ -19,8 +19,7 @@ class OwnerAndAbove
     {
         $user = Auth::user();
 
-        // If the User isnt a Super/Owner/Admin User then they will get redirected
-        if(!$user->userHasRole("super"||"owner"||"admin")){
+        if(!$user->userHasRole("super"||"admin")){
             $request->session()->flash('message', 'Restricted Area, sent back to the Dashboard!');
             $request->session()->flash('text-class', 'text-warning');
             return redirect()->route('admin.index');
