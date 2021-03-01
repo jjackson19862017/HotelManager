@@ -20,7 +20,7 @@
 
             @foreach ($hotels as $audit)
 
-            <p>On {{$audit->}}</p>
+            <p>On {{$audit->created_at}}</p>
 
                     <tr>
                         <td>{{$audit->user->name}}</td>

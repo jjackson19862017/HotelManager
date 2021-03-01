@@ -28,7 +28,6 @@ class User extends Authenticatable implements Auditable
         'name',
         'email',
         'password',
-        'avatar',
         'last_login_at',
     ];
 
@@ -49,6 +48,17 @@ class User extends Authenticatable implements Auditable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userHasRole($roleGiven){
+        foreach($this->roles as $role){
+            if($role->slug == $roleGiven){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     public function setPasswordAttribute($password){
         if ( $password !== null & $password !== "" )
