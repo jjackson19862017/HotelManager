@@ -35,15 +35,15 @@
                                         <td><a href="{{route('staff.profile', $staff->id)}}"><i class="fas fa-eye"></i>
                                             </a>{{$staff->FullName}}</td>
                                         <td>{{$staff->hotel->name}}
-                                                @if(count($staff->positions) != 0)
-                                                 -
-                                                    @foreach ($staff->positions as $position)
-                                                        {!!$position->icon!!}
-                                                    @endforeach
+                                            @if(count($staff->positions) != 0)
+                                                -
+                                                @foreach ($staff->positions as $position)
+                                                <span data-toggle="tooltip" data-placement="top" title="{{$position->name}}">{!!$position->icon!!}</span>
+                                                @endforeach
                                                 @else
 
                                                 @endif
-                                            </a></td>
+                                                </td>
                                         <td>{{$staff->employmenttype}}</td>
                                         <td>{{$staff->status}}</td>
                                     </tr>
@@ -55,7 +55,11 @@
                 </div>
             </div>
         </div>
+    @endsection
 
-
+    @section('JS')
+        $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+        })
     @endsection
 </x-admin-master>

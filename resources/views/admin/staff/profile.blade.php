@@ -5,7 +5,8 @@
             <div class="row">
                 <div class="card mb-4 w-100 border border-dark">
                     <div class="card-header h3 bg-dark text-white">
-                        <a class="btn btn-success btn-sm" href="{{route('staff.edit', $staff->id)}}"><i class="far fa-edit"></i></a> {{$staff->FullName}}
+                        <a class="btn btn-success btn-sm" href="{{route('staff.edit', $staff->id)}}"><i
+                                class="far fa-edit"></i></a> {{$staff->FullName}}
                         <span class="float-right"><form action="{{route('staff.destroy', $staff->id)}}" method="post">
                                     @csrf
                                 @method('DELETE')
@@ -58,12 +59,14 @@
                                             <tbody>
                                             <tr>
                                                 <td>Position:</td>
-                                                <td> <a class="text-dark" data-toggle="modal" data-target="#addPositionModal">@if(count($staff->positions) != 0)
+                                                <td><a class="text-dark" data-toggle="modal"
+                                                       data-target="#addPositionModal">@if(count($staff->positions) != 0)
                                                             @foreach ($staff->positions as $position)
                                                                 {!!$position->icon!!} {{$position->name}} <br>
                                                             @endforeach
                                                         @else
-                                                            <a class="btn btn-outline-secondary text-danger btn-sm" data-toggle="modal" data-target="#addPositionModal">
+                                                            <a class="btn btn-outline-secondary text-danger btn-sm"
+                                                               data-toggle="modal" data-target="#addPositionModal">
                                                                 Setup
                                                             </a>
                                                         @endif</a></td>
@@ -93,9 +96,56 @@
 
                             <div class="col-sm-7">
                                 <div class="card h-100 border border-dark">
-                                    <div class="card-header bg-dark text-white">Holiday Details</div>
+                                    <div class="card-header bg-dark text-white">Holiday Details
+                                        <span class="float-right"><a class="btn btn-success btn-sm" data-toggle="modal"
+                                                                     data-target="#addHolidayModal">Add Holiday</a></span>
+                                    </div>
                                     <div class="card-body">
-
+                                        <table class="table table-borderless table-sm">
+                                            <tbody>
+                                            <tr>
+                                                <td>Holidays Taken:</td>
+                                                <td>{{$daysTaken}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Holidays Left:</td>
+                                                <td>{{$staff->holidaysleft}}</td>
+                                            </tr>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <hr class="border border-dark">
+                                        @if(count($holidays)==0)
+                                        @else
+                                            <table class="table table-borderless table-small">
+                                                <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Start</th>
+                                                    <th>Finish</th>
+                                                    <th>Days Taken</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach ($holidays as $hol)
+                                                    <tr>
+                                                        <td>{{$hol->start}}</td>
+                                                        <td>{{$hol->finish}}</td>
+                                                        <td>{{$hol->daystaken}}</td>
+                                                        <td>
+                                                            <form action="{{route('holidays.destroy', $hol->id)}}"
+                                                                  method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                                                        class="fas fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -104,12 +154,14 @@
                 </div>
 
                 <!-- Change Staff Positions Modal-->
-                <div class="modal fade" id="addPositionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                <div class="modal fade" id="addPositionModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel"
                      aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Edit {{$staff->forename}}'s Position?</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Edit {{$staff->forename}}'s
+                                    Position?</h5>
                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true"><i class="fas fa-times"></i></span></span>
                                 </button>
@@ -161,7 +213,63 @@
                     </div>
                 </div>
 
+                <!-- Add Holiday Modal-->
+                <div class="modal fade" id="addHolidayModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add Holiday for {{$staff->forename}}</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"><i class="fas fa-times"></i></span></span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
 
+                                <form action="{{route('staffs.storeHoliday', $staff)}}" method="post"
+                                      class="form-horizontal">
+                                    @csrf
 
+                                    <input type="hidden"
+                                           class="form-control" name="staff_id" id="staff_id" aria-describedby="helpId"
+                                           value="{{$staff->id}}">
+
+                                    <div class="form-group row">
+                                        <label for="start" class="col-form-label col-sm-5">Start
+                                            Date</label>
+                                        <div class="col-sm-7">
+                                            <input type="date"
+                                                   class="form-control @error('start') is-invalid @enderror"
+                                                   name="start" id="start"
+                                                   aria-describedby="helpId"
+                                                   placeholder="yyyy-mm-dd"
+                                                   value="{{ old('start') }}">
+                                            @error('start')
+                                            <div class="invalid-feedback">{{$message}}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="finish" class="col-form-label col-sm-5">Finish
+                                            Date</label>
+                                        <div class="col-sm-7">
+                                            <input type="date"
+                                                   class="form-control @error('finish') is-invalid @enderror"
+                                                   name="finish" id="finish"
+                                                   aria-describedby="helpId"
+                                                   placeholder="yyyy-mm-dd"
+                                                   value="{{ old('finish') }}">
+                                            @error('finish')
+                                            <div class="invalid-feedback">{{$message}}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary float-right">Create Holiday</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     @endsection
 </x-admin-master>

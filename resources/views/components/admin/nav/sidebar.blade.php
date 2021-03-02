@@ -18,6 +18,7 @@
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="{{route('staff.create')}}">Add Staff Member</a>
                             <a class="nav-link" href="{{route('staff.index')}}">View All Staff Members</a>
+                            <a class="nav-link" href="{{route('holiday.index')}}">View Holidays</a>
                         </nav>
                     </div>
                     <div class="sb-sidenav-menu-heading">Interface</div>
