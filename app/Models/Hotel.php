@@ -20,6 +20,10 @@ class Hotel extends Model implements Auditable
     use HasFactory;
     protected $guarded = []; // Allows Mass assignments.
 
+    public function staff(){
+        return $this->hasMany('App\Models\Staff');
+    }
+
     public function getFullAddressAttribute()
     {
         $myAddress = $this->address . ',';

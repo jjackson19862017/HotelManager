@@ -54,6 +54,10 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapPermissionRoutes();
 
         $this->mapRoleRoutes();
+
+        $this->mapStaffRoutes();
+
+        $this->mapPositionsRoutes();
         //
     }
 
@@ -107,7 +111,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('admin')
             ->middleware(['web'])
             ->namespace($this->namespace)
-            ->group(base_path('routes/web/roles.php'));
+            ->group(base_path('routes/user/roles.php'));
     }
 
     protected function mapPermissionRoutes()
@@ -115,6 +119,22 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('admin')
             ->middleware(['web'])
             ->namespace($this->namespace)
-            ->group(base_path('routes/web/permissions.php'));
+            ->group(base_path('routes/user/permissions.php'));
+    }
+
+    protected function mapStaffRoutes()
+    {
+        Route::prefix('admin')
+            ->middleware(['web'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/staff/staffs.php'));
+    }
+
+    protected function mapPositionsRoutes()
+    {
+        Route::prefix('admin')
+            ->middleware(['web'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/staff/positions.php'));
     }
 }

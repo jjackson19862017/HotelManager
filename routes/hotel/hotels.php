@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Auth::routes();
-Route::middleware('ownerAndAbove')->group(function(){
+Route::middleware('owner')->group(function(){
 Route::get('/hotels/', [App\Http\Controllers\HotelController::class, 'index'])->name('hotel.index');
 Route::post('/hotels', [App\Http\Controllers\HotelController::class, 'store'])->name('hotel.store');
 Route::delete('/hotels/{hotel}', [App\Http\Controllers\HotelController::class, 'destroy'])->name('hotel.destroy'); //info This allows hotels to delete hotels in the admin area
