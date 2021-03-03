@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Auth::routes();
+Route::middleware('auth')->group(function(){
+    Route::get('/hotels/{hotel}/staff',[App\Http\Controllers\HotelController::class, 'staff'])->name('hotel.staff.index');
+});
+
+
 Route::middleware('owner')->group(function(){
 Route::get('/hotels/', [App\Http\Controllers\HotelController::class, 'index'])->name('hotel.index');
 Route::post('/hotels', [App\Http\Controllers\HotelController::class, 'store'])->name('hotel.store');

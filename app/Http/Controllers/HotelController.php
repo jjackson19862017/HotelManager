@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Holidays;
 use App\Models\Hotel;
+use App\Models\Position;
 use App\Models\Role;
+use App\Models\Staff;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -15,6 +19,14 @@ class HotelController extends Controller
         $data = [];
         $data['hotels'] = Hotel::all(); // Returns all the data from the Hotels Table
         return view('admin.hotel.index', $data);
+    }
+
+    public function staff(Hotel $hotel)
+    {
+        $data = [];
+        $data['staffs'] = Staff::whereHotelId($hotel->id)->orderBy('employmenttype', 'asc')->orderBy('surname', 'asc')->get(); // Returns all the information back from the Staff Table
+        $data['positions'] = Position::all(); // Returns all the information back from the Staff Table
+        return view('admin.staff.index', $data);
     }
 
     public function trashedIndex()

@@ -59,8 +59,8 @@ class StaffController extends Controller
             'employmenttype' => ['string'],
             'status' => ['string', 'max:255'],
             'holidaysleft' => ['numeric'],
-            'who' => ['string'],
-            'contactnumber' => ['string'],
+            'who' => ['nullable','string'],
+            'contactnumber' => ['nullable','string'],
             'hotel_id' => ['integer'],
         ]);
 
