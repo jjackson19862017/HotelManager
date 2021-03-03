@@ -103,4 +103,10 @@ class User extends Authenticatable implements Auditable
         // Creates a Many to Many relationship with Role <-> User
         return $this->belongsToMany(Role::class);
     }
+
+    public function sales(): BelongsToMany
+    {
+        // Creates a Many to One relationship with Daily Sales <-> User
+        return $this->belongsToMany(DailySales::class);
+    }
 }

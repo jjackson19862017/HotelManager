@@ -24,6 +24,12 @@ class Hotel extends Model implements Auditable
         return $this->hasMany('App\Models\Staff');
     }
 
+    public function dailysales()
+    {
+        // Creates a One to Many relationship with DailySales <-> Hotel
+        return $this->belongsTo(DailySales::class);
+    }
+
     public function getFullAddressAttribute()
     {
         $myAddress = $this->address . ',';
