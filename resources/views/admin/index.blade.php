@@ -559,6 +559,10 @@
         <script src="{{asset('vendor/chart.js/chart.min.js')}}"></script>
         <script src="{{asset('assets/demo/chart-area-demo.js')}}"></script>
         <script src="{{asset('assets/demo/chart-bar-demo.js')}}"></script>
+
+        <script src="{{asset('vendor/datatables/jquery.dataTables.min.js')}}"></script>
+        <script src="{{asset('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+        <script src="{{asset('assets/demo/datatables-demo.js')}}"></script>
     @endsection
 
 </x-admin-master>

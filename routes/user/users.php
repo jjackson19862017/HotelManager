@@ -41,14 +41,4 @@ Route::get('/users/{user}/profile', [App\Http\Controllers\UserController::class,
 
 
 
-//Route::get('/', [App\Http\Controllers\AdminsController::class, 'index'])->name('admin.index');
-//Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('user.create');
 
-//Route::middleware(['can:view,user','auth'])->group(function(){
-
-//});
-
-//Route::middleware(['role:Admin,Manager,Owner'])->group(function(){
-//    Route::put('/users/{user}/attach', [App\Http\Controllers\UserController::class, 'attach'])->name('user.role.attach');
-//    Route::put('/users/{user}/detach', [App\Http\Controllers\UserController::class, 'detach'])->name('user.role.detach');
-//});

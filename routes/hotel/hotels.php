@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 Route::middleware('auth')->group(function(){
     Route::get('/hotels/{hotel}/staff',[App\Http\Controllers\HotelController::class, 'staff'])->name('hotel.staff.index');
+    Route::get('/hotels/endofday', [App\Http\Controllers\DailySalesController::class, 'create'])->name('endofday.create');
+    Route::post('/hotels/endofday/save', [App\Http\Controllers\DailySalesController::class, 'store'])->name('endofday.store');
+
 });
 
 
@@ -26,6 +29,9 @@ Route::post('/hotels', [App\Http\Controllers\HotelController::class, 'store'])->
 Route::delete('/hotels/{hotel}', [App\Http\Controllers\HotelController::class, 'destroy'])->name('hotel.destroy'); //info This allows hotels to delete hotels in the admin area
 Route::get('/hotels/{hotel}/edit', [App\Http\Controllers\HotelController::class, 'edit'])->name('hotel.edit');
 Route::put('/hotels/{hotel}/update', [App\Http\Controllers\HotelController::class, 'update'])->name('hotel.update');
+
+Route::get('/hotels/{hotel}/occreport', [App\Http\Controllers\DailySalesController::class, 'occreport'])->name('hotel.occupancy');
+
 });
 
 Route::middleware('admin')->group(function() {

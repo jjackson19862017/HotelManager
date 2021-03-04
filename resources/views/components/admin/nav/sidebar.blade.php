@@ -25,6 +25,7 @@
                     </div>
                     <div class="sb-sidenav-menu-heading">Hotel</div>
                     @foreach($hotels as $hotel)
+                        @if(auth()->user()->userHasRole($hotel->slug)||auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse{{$hotel->slug}}"
                            aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-hotel"></i></div>
@@ -35,11 +36,15 @@
                              data-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="{{route('hotel.staff.index',$hotel->id)}}">Staff Member</a>
-                                <a class="nav-link" href="">Daily Sales</a>
-                                <a class="nav-link" href="">Occupancy Report</a>
+                                <a class="nav-link" href="{{route('endofday.create')}}">End Of Day</a>
+                                @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
+                                <a class="nav-link" href="{{route('hotel.occupancy',$hotel->id)}}">Occupancy Report</a>
+                                @endif
                                 <a class="nav-link" href="">Rota</a>
                             </nav>
                         </div>
+                        @else
+                            @endif
                     @endforeach
                     <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts"

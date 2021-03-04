@@ -16,7 +16,7 @@ class CreateDailySalesTable extends Migration
         Schema::create('daily_sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->date('date')->unique();
+            $table->date('date');
             $table->foreignId('hotel_id')->constrained()->onDelete('cascade');
             $table->integer('totalrooms')->unsigned();
             $table->decimal('iou',$precision = 8, $scale = 2)->nullable();
