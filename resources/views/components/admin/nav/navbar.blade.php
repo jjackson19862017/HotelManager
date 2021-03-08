@@ -14,8 +14,8 @@
             <div class="input-group-append">
                 <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
             </div>
-        </div>
-    </form>-->
+        </div>-->
+    </form>
     <!-- Navbar-->
     <ul class="navbar-nav ml-auto ml-md-0">
         @if(auth()->user()->userHasRole('super')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('owner'))

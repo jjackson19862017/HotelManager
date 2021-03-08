@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\General;
 use App\Models\DailySales;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
@@ -151,46 +152,28 @@ class DailySalesController extends Controller
         return redirect()->route('admin.hotels.sales.allmoneysales');
     }
 
-    public function mondays()
-    {
-        $arrayMondays = [];
-        $i = 1;
-        $recordCount = DailySales::all()->count(); // Returns number of records in Table
-        $n = 0;
-        while ($i <= $recordCount) {
-            if (is_null($item = DailySales::find($n))) { // Checks to see if the record exists
-                $n++; // if it doesnt add one and try again.
-            } else {
-                $item = DailySales::find($n)->where('id', '=', $n)->value('Date'); // Returns the date value.
-                $n++;
-                $isMonday = Carbon::parse($item)->isDayOfWeek(Carbon::MONDAY); // Checks the Date to see it equals Monday
-                if ($isMonday) {
-                    array_push($arrayMondays, $item); // Add to array table
-                };
-                $i++;
-            };
-        };
-        $RoomsSoldondaySelection = array_reverse($arrayMondays);
-        return $RoomsSoldondaySelection;
-    }
 
 
-    public function edit(DailySales $sales)
+
+    public function edit(DailySales $id)
     {
         $data = [];
-        $data['sales'] = DailySales::find($sales->id);
-        //dd($data['sales']);
-        return view('admin.hotels.sales.edit', $data);
+        $data['sales'] = DailySales::find($id)->last();
+        $data['OtherPaymentTotals'] = number_format($data['sales']->iou + $data['sales']->bacs + $data['sales']->cheque,2) ;
+        $data['CCPT'] = number_format($data['sales']->cashtotal + $data['sales']->cardtotal ,2) ;
+        //dd($data['CCPT']);
+        return view('admin.dailysales.edit', $data);
     }
 
-    public function update(DailySales $sales, Request $request)
+    public function update(DailySales $dailySales, Request $request): \Illuminate\Http\RedirectResponse
     {
         $data = [];
+
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|numeric',
-            'hotel_id' => 'required|numeric',
-            'totalrooms' => 'required|numeric',
-            'date' => 'unique:daily_sales,date,$this->id',
+            'user_id' => 'numeric',
+            'hotel_id' => 'numeric',
+            'totalrooms' => 'numeric',
+            //'date' => 'unique:daily_sales,date,'.$request->id,
             'iou' => 'numeric',
             'bacs' => 'numeric',
             'cheque' => 'numeric',
@@ -278,11 +261,11 @@ class DailySalesController extends Controller
         ];
 
         //dd($tillcount);
-
-        $sales->update($tillcount);
-        $request->session()->flash('message', 'Sales sheet updated... ');
+        //dd($dailySales);
+        DailySales::updated($tillcount);
+        $request->session()->flash('message', 'Updated: End of Day');
         $request->session()->flash('text-class', 'text-success');
-        return redirect()->route('admin.hotels.sales.allmoneysales');
+        return redirect()->route('hotel.dailysales.index',$request->input('hotel_id'));
     }
 
 
@@ -423,6 +406,71 @@ class DailySalesController extends Controller
         return view('admin.reports.occupancy', $data);
     }
 
+    public function mondays()
+    {
+        $arrayMondays = [];
+        $i = 1;
+        $recordCount = DailySales::all()->count(); // Returns number of records in Table
+        $n = 0;
+        while ($i <= $recordCount) {
+            if (is_null($item = DailySales::find($n))) { // Checks to see if the record exists
+                $n++; // if it doesnt add one and try again.
+            } else {
+                $item = DailySales::find($n)->where('id', '=', $n)->value('Date'); // Returns the date value.
+                $n++;
+                $isMonday = Carbon::parse($item)->isDayOfWeek(Carbon::MONDAY); // Checks the Date to see it equals Monday
+                if ($isMonday) {
+                    array_push($arrayMondays, $item); // Add to array table
+                };
+                $i++;
+            };
+        };
+        $RoomsSoldondaySelection = array_reverse($arrayMondays);
+        return $RoomsSoldondaySelection;
+    }
+
+
+    public function dailysales(Hotel $hotel) {
+        $data = [];
+        $data['hotel'] = Hotel::find($hotel->id);
+
+        // Configure the Date Find Drop Box
+        $testDate = Carbon::now();
+        while ($testDate != Carbon::parse($testDate)->isDayOfWeek(Carbon::MONDAY)) {
+            $testDate = $testDate->subDay();
+        }
+        $startOfWeek = $testDate;
+
+        $testDate = $testDate->format('Y-m-d'); // returns Today
+        $startOfWeek = $startOfWeek->subDay(); // Goes back a Week.
+
+        $data['daysOfWeek'] = General::ArrayDayNames(); // Creates An Array of Day Names
+
+        $data['weeklySales'] = DailySales::orderBy('date', 'asc')->whereHotelId($hotel->id)->where('date', '>=', $startOfWeek)->limit(7)->get();
+        $data['weeklyCount'] = $data['weeklySales']->count();
+
+        $data['tableSize'] = [];
+        // Only displays the days that exist for the week
+        for ($r = 0; $r < $data['weeklyCount']; $r++) {
+            array_push($data['tableSize'], $data['daysOfWeek'][$r]);
+        }
+        //dd($data['weeklySales']);
+        //dd($data['tableSize']);
+
+        return view('admin.dailysales.index',$data);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function salessheet()
     {
@@ -456,7 +504,6 @@ class DailySalesController extends Controller
         for ($r = 0; $r < $data['shardweeklycount']; $r++) {
             array_push($data['tablesize'], $data['days'][$r]);
         }
-
 
         $data['shardweeklytotalbacs'] = DailySales::orderBy('date', 'asc')->where('hotel', '=', 'Shard')->where('date', '>=', $startOfWeek)->limit(7)->pluck('bacs')->sum();
         //$data['themillweeklysales'] = DailySales::orderBy('date','asc')->where('hotel','=','The Mill')->where('date','>=',$startOfWeek)->limit(7)->get();

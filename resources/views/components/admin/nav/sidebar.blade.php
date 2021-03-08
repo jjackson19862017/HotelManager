@@ -46,7 +46,28 @@
                         @else
                             @endif
                     @endforeach
-                    <div class="sb-sidenav-menu-heading">Interface</div>
+
+                    @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
+                    <div class="sb-sidenav-menu-heading">Financials</div>
+                    @foreach($hotels as $hotel)
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinance{{$hotel->slug}}"
+                               aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-hotel"></i></div>
+                                {{$hotel->name}}
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseFinance{{$hotel->slug}}" aria-labelledby="headingOne"
+                                 data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{route('hotel.dailysales.index',$hotel->id)}}">Daily Sales</a>
+                                </nav>
+                            </div>
+
+                    @endforeach
+                    @else
+                            @endif
+
+                            <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts"
                        aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>

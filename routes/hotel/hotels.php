@@ -19,6 +19,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/hotels/{hotel}/staff',[App\Http\Controllers\HotelController::class, 'staff'])->name('hotel.staff.index');
     Route::get('/hotels/endofday', [App\Http\Controllers\DailySalesController::class, 'create'])->name('endofday.create');
     Route::post('/hotels/endofday/save', [App\Http\Controllers\DailySalesController::class, 'store'])->name('endofday.store');
+    Route::put('/hotels/endofday/update', [App\Http\Controllers\DailySalesController::class, 'update'])->name('endofday.update');
+    Route::get('/hotels/endofday/{id}/edit', [App\Http\Controllers\DailySalesController::class, 'edit'])->name('endofday.edit');
 
 });
 
@@ -31,6 +33,10 @@ Route::get('/hotels/{hotel}/edit', [App\Http\Controllers\HotelController::class,
 Route::put('/hotels/{hotel}/update', [App\Http\Controllers\HotelController::class, 'update'])->name('hotel.update');
 
 Route::get('/hotels/{hotel}/occreport', [App\Http\Controllers\DailySalesController::class, 'occreport'])->name('hotel.occupancy');
+
+Route::get('/hotels/{hotel}/dailysales', [App\Http\Controllers\DailySalesController::class, 'dailysales'])->name('hotel.dailysales.index');
+
+
 
 });
 

@@ -14,6 +14,7 @@ class DailySales extends Model implements Auditable
     use HasFactory;
      // Allows Mass assignments.
     protected $guarded = [];
+    //protected $fillable = ['user_id'];
 
     public function user()
     {
