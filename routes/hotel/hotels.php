@@ -36,6 +36,7 @@ Route::get('/hotels/{hotel}/occreport', [App\Http\Controllers\DailySalesControll
 
 Route::get('/hotels/{hotel}/dailysales', [App\Http\Controllers\DailySalesController::class, 'dailysales'])->name('hotel.dailysales.index');
 Route::get('/hotels/{hotel}/prevsales', [App\Http\Controllers\DailySalesController::class, 'prevsales'])->name('hotel.prevsales.index');
+Route::get('/hotels/{hotel}/weeklysales', [App\Http\Controllers\DailySalesController::class, 'weeklysales'])->name('hotel.prevsales.weekly');
 
 
 

@@ -502,6 +502,42 @@ class DailySalesController extends Controller
         return view('admin.prevsales.index', $data);
     }
 
+    public function weeklysales(DailySales $sales, Hotel $hotel)
+    {
+        $data = [];
+        //$data['all'] = DailySales::whereHotelId($hotel->id)->orderBy('date','desc')->get();
+
+        // Finds the Earliest Date
+        $data['earliestDate'] = DailySales::whereHotelId($hotel->id)->select('date')->orderBy('date', 'asc')->value('date');
+
+        // Finds the Latest Date
+        $data['latestDate'] = DailySales::whereHotelId($hotel->id)->select('date')->orderBy('date', 'desc')->value('date');
+
+        //Finds the Hotel to give information to tell the end user what hotel is being viewed
+        $data['hotel'] = Hotel::find($hotel->id);
+
+        $data['earliestYear'] = Carbon::parse($data['earliestDate'])->format('Y'); // Finds Earliest Record and Extracts the Year
+        $data['latestYear'] = Carbon::parse($data['latestDate'])->format('Y'); // Finds Latest Record and Extracts the Year
+
+        $data['yearsPast'] = $data['latestYear'] - $data['earliestYear']; // Calculates the Difference Between the Years
+
+        // Creates Array and then fills up each row with the Earliest Year to the Latest Year.
+        $data['years'] = [];
+        for ($i = $data['yearsPast']; $i >= 0; $i--) {
+            $data['years'][$data['latestYear'] - $i] = $data['latestYear'] - $i;
+
+        };
+
+        // Fills up each array with information categorised into each year
+        foreach ($data['years'] as $i => $year) {
+            $from = Carbon::createFromDate($data['years'][$i], 1, 1)->subDay();
+            $to = Carbon::createFromDate($data['years'][$i], 12, 31);
+            $data['years'][$i] = DailySales::whereHotelId($hotel->id)->select('date', DB::raw('sum(cashtotal) as cashtotal'), DB::raw('sum(cardtotal) as cardtotal'), DB::raw('sum(gpostotal) as gpostotal'), DB::raw('sum(cashsafe) as cashsafe'), DB::raw('sum(total) as total'), DB::raw('sum(roomssold) as roomssold'), DB::raw('sum(roomsoccupied) as roomsoccupied'),DB::raw('sum(residents) as residents'))->whereBetween('date', [$from, $to])->groupBy(DB::raw("YEAR(`date`)"), DB::raw("WEEK(`date`)"))->get();
+        }
+        return view('admin.prevsales.weekly', $data);
+    }
+
+
 
     public function salessheet()
     {

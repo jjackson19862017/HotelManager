@@ -5,8 +5,8 @@
             <div class="row">
                 <div class="card mb-4 w-100">
                     <div class="card-header h4">
-                        <i class="fas fa-calendar-alt mr-2"></i>
-                        {{$hotel->name}} Previous Yearly Sales Categorised By Month
+                        <i class="fas fa-calendar-week mr-2"></i>
+                        {{$hotel->name}} Previous Yearly Sales Categorised By Week
                     </div>
                     <div class="card-body">
 
@@ -32,7 +32,7 @@
                                                 <table class="table table-sm">
                                                     <thead class="table-dark">
                                                     <tr>
-                                                        <th>Date</th>
+                                                        <th>Date (Week Number)</th>
                                                         <th>Cards</th>
                                                         <th>Cash</th>
                                                         <th>Gpos</th>
@@ -43,16 +43,16 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    @foreach($year as $mth => $month)
+                                                    @foreach($year as $wk => $week)
                                                         <tr>
-                                                            <td>{{date('F', mktime(0, 0, 0, $mth+1, ))}}</td>
-                                                            <td>£{{$month->cardtotal}}</td>
-                                                            <td>£{{$month->cashtotal}}</td>
-                                                            <td>£{{$month->gpostotal}}</td>
-                                                            <td>£{{$month->total}}</td>
-                                                            <td>{{$month->roomssold}}</td>
-                                                            <td>{{$month->roomsoccupied}}</td>
-                                                            <td>{{$month->residents}}</td>
+                                                            <td>{{date('D d M', strtotime($week->date))}}: ({{date('W', strtotime($week->date))}})</td>
+                                                            <td>£{{$week->cardtotal}}</td>
+                                                            <td>£{{$week->cashtotal}}</td>
+                                                            <td>£{{$week->gpostotal}}</td>
+                                                            <td>£{{$week->total}}</td>
+                                                            <td>{{$week->roomssold}}</td>
+                                                            <td>{{$week->roomsoccupied}}</td>
+                                                            <td>{{$week->residents}}</td>
                                                         </tr>
 
                                                     @endforeach

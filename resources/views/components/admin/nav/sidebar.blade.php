@@ -26,31 +26,39 @@
                     <div class="sb-sidenav-menu-heading">Hotel</div>
                     @foreach($hotels as $hotel)
                         @if(auth()->user()->userHasRole($hotel->slug)||auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
-                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse{{$hotel->slug}}"
-                           aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-hotel"></i></div>
-                            {{$hotel->name}}
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapse{{$hotel->slug}}" aria-labelledby="headingOne"
-                             data-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="{{route('hotel.staff.index',$hotel->id)}}">Staff Member</a>
-                                <a class="nav-link" href="{{route('endofday.create')}}">End Of Day</a>
-                                @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
-                                <a class="nav-link" href="{{route('hotel.occupancy',$hotel->id)}}">Occupancy Report</a>
-                                    <a class="nav-link" href="{{route('hotel.dailysales.index',$hotel->id)}}">Daily Sales</a>
-                                    <a class="nav-link" href="{{route('hotel.prevsales.index',$hotel->id)}}">Previous Sales</a>
-                                @endif
-                                <a class="nav-link" href="">Rota</a>
-                            </nav>
-                        </div>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse"
+                               data-target="#collapse{{$hotel->slug}}"
+                               aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-hotel"></i></div>
+                                {{$hotel->name}}
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapse{{$hotel->slug}}" aria-labelledby="headingOne"
+                                 data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{route('hotel.staff.index',$hotel->id)}}"><i
+                                            class="fas fa-user-tie mr-2"></i> Staff Member</a>
+                                    <a class="nav-link" href="{{route('endofday.create')}}"><i
+                                            class="fas fa-cash-register mr-2"></i> End Of Day</a>
+                                    @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
+                                        <a class="nav-link" href="{{route('hotel.occupancy',$hotel->id)}}"><i class="fas fa-hotel mr-2"></i> Occupancy
+                                            Report</a>
+                                        <a class="nav-link" href="{{route('hotel.dailysales.index',$hotel->id)}}"><i class="fas fa-calendar-day mr-2"></i> Daily
+                                            Sales</a>
+                                        <a class="nav-link" href="{{route('hotel.prevsales.index',$hotel->id)}}"><i class="fas fa-calendar-alt mr-2"></i> Monthly
+                                            Sales</a>
+                                        <a class="nav-link" href="{{route('hotel.prevsales.weekly',$hotel->id)}}"><i class="fas fa-calendar-week mr-2"></i> Weekly
+                                            Sales</a>
+                                    @endif
+                                    <a class="nav-link" href="">Rota</a>
+                                </nav>
+                            </div>
                         @else
-                            @endif
+                        @endif
                     @endforeach
 
 
-                            <div class="sb-sidenav-menu-heading">Interface</div>
+                    <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts"
                        aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
