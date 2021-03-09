@@ -481,8 +481,9 @@ class DailySalesController extends Controller
 
         // Creates Array and then fills up each row with the Earliest Year to the Latest Year.
         $data['years'] = [];
-        for ($i = 0; $i <= $data['yearsPast']; $i++) {
-            $data['years'][$data['earliestYear'] + $i] = $data['earliestYear'] + $i;
+        for ($i = $data['yearsPast']; $i >= 0; $i--) {
+            $data['years'][$data['latestYear'] - $i] = $data['latestYear'] - $i;
+
         };
 
         // Fills up each array with information categorised into each year
@@ -493,8 +494,7 @@ class DailySalesController extends Controller
             //var_dump($data['years'][$i]);
 
         }
-
-        //dd($data['years']);
+        //dd($data);
 
         //dd($data);
 //dd($data['years']);

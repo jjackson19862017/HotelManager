@@ -39,6 +39,8 @@
                                 <a class="nav-link" href="{{route('endofday.create')}}">End Of Day</a>
                                 @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
                                 <a class="nav-link" href="{{route('hotel.occupancy',$hotel->id)}}">Occupancy Report</a>
+                                    <a class="nav-link" href="{{route('hotel.dailysales.index',$hotel->id)}}">Daily Sales</a>
+                                    <a class="nav-link" href="{{route('hotel.prevsales.index',$hotel->id)}}">Previous Sales</a>
                                 @endif
                                 <a class="nav-link" href="">Rota</a>
                             </nav>
@@ -47,26 +49,6 @@
                             @endif
                     @endforeach
 
-                    @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
-                    <div class="sb-sidenav-menu-heading">Financials</div>
-                    @foreach($hotels as $hotel)
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinance{{$hotel->slug}}"
-                               aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-hotel"></i></div>
-                                {{$hotel->name}}
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseFinance{{$hotel->slug}}" aria-labelledby="headingOne"
-                                 data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{route('hotel.dailysales.index',$hotel->id)}}">Daily Sales</a>
-                                    <a class="nav-link" href="{{route('hotel.prevsales.index',$hotel->id)}}">Previous Sales</a>
-                                </nav>
-                            </div>
-
-                    @endforeach
-                    @else
-                            @endif
 
                             <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts"
