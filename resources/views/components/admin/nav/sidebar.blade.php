@@ -60,6 +60,7 @@
                                  data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{route('hotel.dailysales.index',$hotel->id)}}">Daily Sales</a>
+                                    <a class="nav-link" href="{{route('hotel.prevsales.index',$hotel->id)}}">Previous Sales</a>
                                 </nav>
                             </div>
 

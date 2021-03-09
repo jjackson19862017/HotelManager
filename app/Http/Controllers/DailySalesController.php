@@ -7,6 +7,7 @@ use App\Models\DailySales;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
 use App\Models\Staff;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
@@ -30,8 +31,8 @@ class DailySalesController extends Controller
             'user_id' => 'required|numeric',
             'hotel_id' => 'required|numeric',
             'totalrooms' => 'required|numeric',
-            'date' => Rule::unique('daily_sales')->where(function ($query) use($request) {
-                return $query->where('hotel_id','=',$request->input('hotel_id'));
+            'date' => Rule::unique('daily_sales')->where(function ($query) use ($request) {
+                return $query->where('hotel_id', '=', $request->input('hotel_id'));
             }),
             'iou' => 'numeric',
             'bacs' => 'numeric',
@@ -153,14 +154,12 @@ class DailySalesController extends Controller
     }
 
 
-
-
     public function edit(DailySales $id)
     {
         $data = [];
         $data['sales'] = DailySales::find($id)->last();
-        $data['OtherPaymentTotals'] = number_format($data['sales']->iou + $data['sales']->bacs + $data['sales']->cheque,2) ;
-        $data['CCPT'] = number_format($data['sales']->cashtotal + $data['sales']->cardtotal ,2) ;
+        $data['OtherPaymentTotals'] = number_format($data['sales']->iou + $data['sales']->bacs + $data['sales']->cheque, 2);
+        $data['CCPT'] = number_format($data['sales']->cashtotal + $data['sales']->cardtotal, 2);
         //dd($data['CCPT']);
         return view('admin.dailysales.edit', $data);
     }
@@ -265,7 +264,7 @@ class DailySalesController extends Controller
         DailySales::updated($tillcount);
         $request->session()->flash('message', 'Updated: End of Day');
         $request->session()->flash('text-class', 'text-success');
-        return redirect()->route('hotel.dailysales.index',$request->input('hotel_id'));
+        return redirect()->route('hotel.dailysales.index', $request->input('hotel_id'));
     }
 
 
@@ -430,7 +429,8 @@ class DailySalesController extends Controller
     }
 
 
-    public function dailysales(Hotel $hotel) {
+    public function dailysales(Hotel $hotel)
+    {
         $data = [];
         $data['hotel'] = Hotel::find($hotel->id);
 
@@ -446,7 +446,7 @@ class DailySalesController extends Controller
 
         $data['daysOfWeek'] = General::ArrayDayNames(); // Creates An Array of Day Names
 
-        $data['weeklySales'] = DailySales::orderBy('date', 'asc')->whereHotelId($hotel->id)->where('date', '>=', $startOfWeek)->limit(7)->get();
+        $data['weeklySales'] = DailySales::orderBy('date', 'asc')->where('hotel_id', '=', $hotel->id)->where('date', '>=', $startOfWeek)->limit(7)->get();
         $data['weeklyCount'] = $data['weeklySales']->count();
 
         $data['tableSize'] = [];
@@ -457,19 +457,50 @@ class DailySalesController extends Controller
         //dd($data['weeklySales']);
         //dd($data['tableSize']);
 
-        return view('admin.dailysales.index',$data);
+        return view('admin.dailysales.index', $data);
     }
 
+    public function prevsales(DailySales $sales, Hotel $hotel)
+    {
+        $data = [];
+        //$data['all'] = DailySales::whereHotelId($hotel->id)->orderBy('date','desc')->get();
 
+        // Finds the Earliest Date
+        $data['earliestDate'] = DailySales::whereHotelId($hotel->id)->select('date')->orderBy('date', 'asc')->value('date');
 
+        // Finds the Latest Date
+        $data['latestDate'] = DailySales::whereHotelId($hotel->id)->select('date')->orderBy('date', 'desc')->value('date');
 
+        //Finds the Hotel to give information to tell the end user what hotel is being viewed
+        $data['hotel'] = Hotel::find($hotel->id);
 
+        $data['earliestYear'] = Carbon::parse($data['earliestDate'])->format('Y'); // Finds Earliest Record and Extracts the Year
+        $data['latestYear'] = Carbon::parse($data['latestDate'])->format('Y'); // Finds Latest Record and Extracts the Year
 
+        $data['yearsPast'] = $data['latestYear'] - $data['earliestYear']; // Calculates the Difference Between the Years
 
+        // Creates Array and then fills up each row with the Earliest Year to the Latest Year.
+        $data['years'] = [];
+        for ($i = 0; $i <= $data['yearsPast']; $i++) {
+            $data['years'][$data['earliestYear'] + $i] = $data['earliestYear'] + $i;
+        };
 
+        // Fills up each array with information categorised into each year
+        foreach ($data['years'] as $i => $year) {
+            $from = Carbon::createFromDate($data['years'][$i], 1, 1)->subDay();
+            $to = Carbon::createFromDate($data['years'][$i], 12, 31);
+            $data['years'][$i] = DailySales::whereHotelId($hotel->id)->select('date', DB::raw('sum(cashtotal) as cashtotal'), DB::raw('sum(cardtotal) as cardtotal'), DB::raw('sum(gpostotal) as gpostotal'), DB::raw('sum(cashsafe) as cashsafe'), DB::raw('sum(total) as total'), DB::raw('sum(roomssold) as roomssold'), DB::raw('sum(roomsoccupied) as roomsoccupied'),DB::raw('sum(residents) as residents'))->whereBetween('date', [$from, $to])->groupBy(DB::raw("YEAR(`date`)"), DB::raw("MONTH(`date`)"))->get();
+            //var_dump($data['years'][$i]);
 
+        }
 
+        //dd($data['years']);
 
+        //dd($data);
+//dd($data['years']);
+
+        return view('admin.prevsales.index', $data);
+    }
 
 
     public function salessheet()

@@ -35,6 +35,7 @@ Route::put('/hotels/{hotel}/update', [App\Http\Controllers\HotelController::clas
 Route::get('/hotels/{hotel}/occreport', [App\Http\Controllers\DailySalesController::class, 'occreport'])->name('hotel.occupancy');
 
 Route::get('/hotels/{hotel}/dailysales', [App\Http\Controllers\DailySalesController::class, 'dailysales'])->name('hotel.dailysales.index');
+Route::get('/hotels/{hotel}/prevsales', [App\Http\Controllers\DailySalesController::class, 'prevsales'])->name('hotel.prevsales.index');
 
 
 

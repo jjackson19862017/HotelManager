@@ -12,8 +12,10 @@ class DailySales extends Model implements Auditable
     use SoftDeletes;
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
-     // Allows Mass assignments.
+
+    // Allows Mass assignments.
     protected $guarded = [];
+
     //protected $fillable = ['user_id'];
 
     public function user()
