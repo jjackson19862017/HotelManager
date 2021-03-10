@@ -55,7 +55,7 @@
                                         <a class="nav-link" href="{{route('hotel.prevsales.weekly',$hotel->id)}}"><i class="fas fa-calendar-week mr-2"></i> Weekly
                                             Sales</a>
                                     @endif
-                                    <a class="nav-link" href=""><i class="fas fa-user-clock mr-2"></i> Rota</a>
+                                    <a class="nav-link" href="{{route('rota.index',$hotel->id)}}"><i class="fas fa-user-clock mr-2"></i> Rota</a>
                                 </nav>
                             </div>
                         @else

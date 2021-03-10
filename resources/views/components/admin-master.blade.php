@@ -11,6 +11,7 @@
         <link href="{{asset('vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet"/>
         <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
         <script src="{{asset('vendor/fontawesome-free/js/all.min.js')}}"></script>
+        @yield('scripts')
     </head>
     <body class="sb-nav-fixed">
         <!-- Nav Bar -->

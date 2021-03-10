@@ -22,8 +22,8 @@
                                 <tbody>
                                     @foreach ($placements as $placement)
                                         <tr class="h3">
-                                            <td><a class="align-content-center btn btn-success btn-sm" href="{{route('placement.edit', $placement->id)}}"><i class="fas fa-edit"></i>
-                                                </a></td>
+                                            <td>@if($placement->name != "Off" && $placement->name != "Sick" && $placement->name != "Holiday" )<a class="align-content-center btn btn-success btn-sm" href="{{route('placement.edit', $placement->id)}}"><i class="fas fa-edit"></i>
+                                                </a>@endif</td>
                                             <td >{{$placement->name}}</td>
                                         </tr>
 

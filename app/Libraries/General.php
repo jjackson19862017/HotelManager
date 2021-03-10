@@ -1,5 +1,6 @@
 <?php
 namespace App\Libraries;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 class General {
@@ -21,5 +22,14 @@ class General {
             $days[$i] = jddayofweek($i,1);
         }
         return $days;
+    }
+
+    public static function FindMeAMonday($date){
+        $datevar = $date; // Gets current date
+        while($datevar != Carbon::parse($datevar)->isDayOfWeek(Carbon::MONDAY)){
+            $datevar = $datevar->subDay(); // While the date isnt a Monday subtract a day till it is Monday
+        }
+        return $datevar->format('Y-m-d');
+
     }
 }

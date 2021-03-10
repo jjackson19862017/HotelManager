@@ -15,7 +15,8 @@
                             <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th>Name</th>
+
+                                    <th colspan="2">Name</th>
                                     <th>Employed At</th>
                                     <th>Type</th>
                                     <th>Status</th>
@@ -32,6 +33,12 @@
                                         @else
                                         class="alert-danger"
                                         @endif>
+                                        <td style="width: 100px;">
+                                            @if($staff->status == "Employed")
+                                            <a class="btn btn-outline-primary btn-sm" href="{{route('rota.create',$staff->id)}}">Make Rota</a>
+                                            @else
+                                            @endif
+                                        </td>
                                         <td><a href="{{route('staff.profile', $staff->id)}}"><i class="fas fa-eye"></i>
                                             </a>{{$staff->FullName}}</td>
                                         <td>{{$staff->hotel->name}}
