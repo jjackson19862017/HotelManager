@@ -24,6 +24,10 @@ class Hotel extends Model implements Auditable
         return $this->hasMany('App\Models\Staff');
     }
 
+    public function rotas(){
+        return $this->hasMany('App\Models\Rota');
+    }
+
     public function dailysales()
     {
         // Creates a One to Many relationship with DailySales <-> Hotel

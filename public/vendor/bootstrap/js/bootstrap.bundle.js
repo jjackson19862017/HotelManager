@@ -2984,8 +2984,8 @@
   }
 
   /**
-   * List of accepted placements to use as values of the `placement` option.<br />
-   * Valid placements are:
+   * List of accepted placement to use as values of the `placement` option.<br />
+   * Valid placement are:
    * - `auto`
    * - `top`
    * - `right`
@@ -3011,7 +3011,7 @@
    * @type {Array}
    * @enum {String}
    * @readonly
-   * @method placements
+   * @method placement
    * @memberof Popper
    */
   var placements = ['auto-start', 'auto', 'auto-end', 'top-start', 'top', 'top-end', 'right-start', 'right', 'right-end', 'bottom-end', 'bottom', 'bottom-start', 'left-end', 'left', 'left-start'];
@@ -3020,14 +3020,14 @@
   var validPlacements = placements.slice(3);
 
   /**
-   * Given an initial placement, returns all the subsequent placements
+   * Given an initial placement, returns all the subsequent placement
    * clockwise (or counter-clockwise).
    *
    * @method
    * @memberof Popper.Utils
    * @argument {String} placement - A valid placement (it accepts variations)
-   * @argument {Boolean} counter - Set to true to walk the placements counterclockwise
-   * @returns {Array} placements including their variations
+   * @argument {Boolean} counter - Set to true to walk the placement counterclockwise
+   * @returns {Array} placement including their variations
    */
   function clockwise(placement) {
     var counter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -3700,7 +3700,7 @@
        * @prop {String|Array} behavior='flip'
        * The behavior used to change the popper's placement. It can be one of
        * `flip`, `clockwise`, `counterclockwise` or an array with a list of valid
-       * placements (with optional variations)
+       * placement (with optional variations)
        */
       behavior: 'flip',
       /**
@@ -3866,7 +3866,7 @@
   var Defaults = {
     /**
      * Popper's placement.
-     * @prop {Popper.placements} placement='bottom'
+     * @prop {Popper.placement} placement='bottom'
      */
     placement: 'bottom',
 

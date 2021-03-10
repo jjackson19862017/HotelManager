@@ -6,8 +6,8 @@
                 <div class="card mb-4 w-100">
                     <div class="card-header">
                         <i class="fas fa-table mr-1"></i>
-                        Positions <span class="float-right"><a name="" id="" class="btn btn-success btn-sm" href="{{route('position.create')}}"
-                                                                 >Create Position</a></span>
+                        Placements <span class="float-right"><a name="" id="" class="btn btn-success btn-sm" href="{{route('placement.create')}}"
+                                                                 >Create Placement</a></span>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -15,18 +15,16 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th style="width:50px;">Edit</th>
-                                    <th style="width:50px;">Icon</th>
                                     <th>Name</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                    @foreach ($positions as $position)
+                                    @foreach ($placements as $placement)
                                         <tr class="h3">
-                                            <td><a class="align-content-center btn btn-success btn-sm" href="{{route('position.edit', $position->id)}}"><i class="fas fa-edit"></i>
+                                            <td><a class="align-content-center btn btn-success btn-sm" href="{{route('placement.edit', $placement->id)}}"><i class="fas fa-edit"></i>
                                                 </a></td>
-                                            <td class="text-center">{!!$position->icon!!}</td>
-                                            <td >{{$position->name}}</td>
+                                            <td >{{$placement->name}}</td>
                                         </tr>
 
                                     @endforeach
@@ -38,5 +36,6 @@
                 </div>
             </div>
         </div>
+
     @endsection
 </x-admin-master>

@@ -38,6 +38,13 @@ Route::get('/hotels/{hotel}/dailysales', [App\Http\Controllers\DailySalesControl
 Route::get('/hotels/{hotel}/prevsales', [App\Http\Controllers\DailySalesController::class, 'prevsales'])->name('hotel.prevsales.index');
 Route::get('/hotels/{hotel}/weeklysales', [App\Http\Controllers\DailySalesController::class, 'weeklysales'])->name('hotel.prevsales.weekly');
 
+Route::get('/hotels/placement', [App\Http\Controllers\PlacementController::class, 'index'])->name('placement.index');
+Route::post('/hotels/placement/store', [App\Http\Controllers\PlacementController::class, 'store'])->name('placement.store');
+Route::get('/hotels/placement/create', [App\Http\Controllers\PlacementController::class, 'create'])->name('placement.create');
+Route::get('/hotels/placement/{placement}/edit', [App\Http\Controllers\PlacementController::class, 'edit'])->name('placement.edit');
+Route::put('/hotels/placement/{placement}/update', [App\Http\Controllers\PlacementController::class, 'update'])->name('placement.update');
+Route::delete('/hotels/placement/{placement}/delete', [App\Http\Controllers\PlacementController::class, 'destroy'])->name('placement.destroy'); //info This allows hotels to delete hotels in the admin area
+
 
 
 });

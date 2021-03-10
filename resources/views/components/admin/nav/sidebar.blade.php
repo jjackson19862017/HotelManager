@@ -40,11 +40,12 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     @if(auth()->user()->userHasRole($hotel->slug. ".manager")||auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
                                     <a class="nav-link" href="{{route('hotel.staff.index',$hotel->id)}}"><i
-                                            class="fas fa-user-tie mr-2"></i> Staff Member</a>
+                                            class="fas fa-user-tie mr-2"></i> Staff Members</a>
                                     @endif
                                     <a class="nav-link" href="{{route('endofday.create')}}"><i
                                             class="fas fa-cash-register mr-2"></i> End Of Day</a>
                                     @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
+                                        <hr class="border border-white w-50 my-1">
                                         <a class="nav-link" href="{{route('hotel.occupancy',$hotel->id)}}"><i class="fas fa-hotel mr-2"></i> Occupancy
                                             Report</a>
                                         <a class="nav-link" href="{{route('hotel.dailysales.index',$hotel->id)}}"><i class="fas fa-calendar-day mr-2"></i> Daily

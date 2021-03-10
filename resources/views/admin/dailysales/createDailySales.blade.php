@@ -6,14 +6,15 @@
 
                 <div class="card w-100">
                     <div class="card-header bg-dark text-white"><i class="fas fa-file-invoice"></i>
-                        Clerk: {{auth()->user()->name}} -
+                        Clerk: {{auth()->user()->name}}
                         @foreach($hotels as $hotel)
                             @if(auth()->user()->userHasRole($hotel->slug))
-                                {{$hotel->name}}
+                                - {{$hotel->name}}
                             @endif
                         @endforeach
                         <span class="float-right">Date: {{now()->format('l jS \\of F Y')}}</span></div>
                     <div class="card-body border border-dark">
+                        @if(!count($errors) == 0)
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -21,6 +22,7 @@
                                 @endforeach
                             </ul>
                         </div>
+                        @endif
                         <form action="{{route('endofday.store')}}" method="post" class="form-horizontal">
                             @csrf
 
@@ -36,20 +38,18 @@
                                    name="hotel_id"
                                    id="hotel_id" aria-describedby="helpId"
                                    @foreach($hotels as $hotel)
-                                   @if(auth()->user()->userHasRole($hotel->slug))
-                                   value="{{$hotel->id}}">
-                            @endif
+
+                                   value="{{$hotel->id}}"
                             @endforeach
+                            >
                             <input type="hidden"
                                    class="form-control text-right"
                                    name="totalrooms"
                                    id="totalrooms" aria-describedby="helpId"
                                    @foreach($hotels as $hotel)
-                                   @if(auth()->user()->userHasRole($hotel->slug))
-                                   value="{{$hotel->numberOfRooms}}">
-                            @endif
+                                   value="{{$hotel->numberOfRooms}}"
                             @endforeach
-
+>
                             <div class="row">
                                 <div class="col-sm-12 col-md-4">
                                     <div class="card border border-dark mb-4">

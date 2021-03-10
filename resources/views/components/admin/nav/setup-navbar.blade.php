@@ -25,6 +25,8 @@
             <a class="dropdown-item" href="{{route('permission.index')}}"><i class="fas fa-tasks"></i> Permission</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{route('position.index')}}"><i class="fas fa-chess-board"></i> Staff Positions</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{route('placement.index')}}"><i class="fas fa-map-pin"></i> Rota Placements</a>
 
         @endif
     </div>
