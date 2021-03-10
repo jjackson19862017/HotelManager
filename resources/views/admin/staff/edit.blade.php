@@ -175,7 +175,7 @@
                                     <div class="col-sm-8">
 
                                         <select class="form-control" name="personallicense" id="personallicense">
-                                            @if($staff->personallicense=='yes')
+                                            @if($staff->personallicense=='check')
                                                 <option value="Yes">Yes</option>
                                                 <option value="No">No</option>
                                             @else

@@ -70,6 +70,12 @@ class HotelController extends Controller
             'slug'=> Str::of(Str::lower(request('name')))->slug('-'),
         ]);
 
+        $manager = request('name') . " Manager";
+
+        Role::create([
+            'name'=> Str::ucfirst($manager),
+            'slug'=> Str::of(Str::lower($manager))->slug('-'),
+        ]);
         $request->session()->flash('message', 'Hotel Created');
         $request->session()->flash('text-class', 'text-success');
 
@@ -100,6 +106,7 @@ class HotelController extends Controller
             'email'=> ['required','string'],
             'numberOfRooms'=> ['required','integer'],
         ]);
+
 
         $hotel->update($inputs);
         $request->session()->flash('message', 'Updated: ' . $request->name);

@@ -17,6 +17,54 @@ class DailySales extends Model implements Auditable
     // Allows Mass assignments.
     protected $guarded = [];
 
+    protected $fillable = [
+        'id',
+        'user_id',
+        'date',
+        'hotel_id',
+        'totalrooms',
+        'iou',
+        'bacs',
+        'cheque',
+        'notefifty',
+        'notetwenty',
+        'noteten',
+        'notefive',
+        'coinonepound',
+        'coinfifty',
+        'cointwenty',
+        'cointen',
+        'coinfive',
+        'cointwo',
+        'coinone',
+        'totalnotefifty',
+        'totalnotetwenty',
+        'totalnoteten',
+        'totalnotefive',
+        'totalcoinonepound',
+        'totalcoinfifty',
+        'totalcointwenty',
+        'totalcointen',
+        'totalcoinfive',
+        'totalcointwo',
+        'totalcoinone',
+        'cashtotal',
+        'float',
+        'pdqreception',
+        'pdqbar',
+        'pdqrestaurant',
+        'cardtotal',
+        'gpostotal',
+        'cashsafe',
+        'total',
+        'roomssold',
+        'roomsoccupied',
+        'residents',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     //protected $fillable = ['user_id'];
 
     public function user()
@@ -30,10 +78,4 @@ class DailySales extends Model implements Auditable
         // Creates a One to Many relationship with Holidays <-> Staff
         return $this->belongsToMany(Hotel::class);
     }
-
-    public function getWeekNumberAttribute($date)
-    {
-        return Carbon::parse($date)->weekOfYear;
-    }
-
 }

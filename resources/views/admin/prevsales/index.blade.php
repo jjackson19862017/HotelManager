@@ -45,7 +45,7 @@
                                                     <tbody>
                                                     @foreach($year as $mth => $month)
                                                         <tr>
-                                                            <td>{{date('F', mktime(0, 0, 0, $mth+1, ))}}</td>
+                                                            <td>{{date('F', strtotime($month->date))}}</td>
                                                             <td>£{{$month->cardtotal}}</td>
                                                             <td>£{{$month->cashtotal}}</td>
                                                             <td>£{{$month->gpostotal}}</td>

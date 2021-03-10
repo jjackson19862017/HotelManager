@@ -24,6 +24,9 @@
                         <form action="{{route('endofday.update',$sales->id)}}" method="POST" class="form-horizontal">
                             @csrf
                             @method('PUT')
+                            <input type="hidden" class="form-control" name="id" id="id"
+                                   value="{{$sales->id}}"
+                                   aria-describedby="helpId">
                             <input type="hidden" class="form-control" name="user_id" id="user_id"
                                    value="{{auth()->user()->id}}"
                                    aria-describedby="helpId">

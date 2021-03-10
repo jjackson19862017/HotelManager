@@ -167,7 +167,6 @@ class DailySalesController extends Controller
     public function update(DailySales $dailySales, Request $request): \Illuminate\Http\RedirectResponse
     {
         $data = [];
-
         $validator = Validator::make($request->all(), [
             'user_id' => 'numeric',
             'hotel_id' => 'numeric',
@@ -193,7 +192,7 @@ class DailySalesController extends Controller
             'gpostotal' => 'required|numeric',
             'roomssold' => 'numeric',
             'roomsoccupied' => 'numeric',
-            'residents' => 'numeric',
+            'residents' => 'numeric'
         ]);
 
         if ($validator->fails()) {
@@ -261,7 +260,7 @@ class DailySalesController extends Controller
 
         //dd($tillcount);
         //dd($dailySales);
-        DailySales::updated($tillcount);
+        $dailySales->whereId($request->input('id'))->update($tillcount);
         $request->session()->flash('message', 'Updated: End of Day');
         $request->session()->flash('text-class', 'text-success');
         return redirect()->route('hotel.dailysales.index', $request->input('hotel_id'));

@@ -8,6 +8,7 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
+                    @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
                     <div class="sb-sidenav-menu-heading">Personnel</div>
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStaff"
                        aria-expanded="false" aria-controls="collapseLayouts">
@@ -23,6 +24,7 @@
                             <a class="nav-link" href="{{route('holiday.index')}}">View Holidays</a>
                         </nav>
                     </div>
+                    @endif
                     <div class="sb-sidenav-menu-heading">Hotel</div>
                     @foreach($hotels as $hotel)
                         @if(auth()->user()->userHasRole($hotel->slug)||auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
@@ -36,8 +38,10 @@
                             <div class="collapse" id="collapse{{$hotel->slug}}" aria-labelledby="headingOne"
                                  data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
+                                    @if(auth()->user()->userHasRole($hotel->slug. ".manager")||auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
                                     <a class="nav-link" href="{{route('hotel.staff.index',$hotel->id)}}"><i
                                             class="fas fa-user-tie mr-2"></i> Staff Member</a>
+                                    @endif
                                     <a class="nav-link" href="{{route('endofday.create')}}"><i
                                             class="fas fa-cash-register mr-2"></i> End Of Day</a>
                                     @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
@@ -50,7 +54,7 @@
                                         <a class="nav-link" href="{{route('hotel.prevsales.weekly',$hotel->id)}}"><i class="fas fa-calendar-week mr-2"></i> Weekly
                                             Sales</a>
                                     @endif
-                                    <a class="nav-link" href="">Rota</a>
+                                    <a class="nav-link" href=""><i class="fas fa-user-clock mr-2"></i> Rota</a>
                                 </nav>
                             </div>
                         @else
