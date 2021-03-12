@@ -20,11 +20,21 @@ class RotaController extends Controller
     {
         $data = [];
         $data['hotel'] = $hotel;
+        $data['Placements'] = Placement::all();
         $data['DaysOfWeek'] = General::ArrayDayNames();
         $data['IsAMonday'] = General::FindMeAMonday(Carbon::now());
-        $data['ThisWeeksRota'] = Rota::whereWeekcommencing($data['IsAMonday'])->get();
+        $data['ThisWeeksRota'] = Rota::whereWeekcommencing($data['IsAMonday'])->whereHotelId($hotel->id)->get();
+        $data['ThisWeeksTotalHours'] = $data['ThisWeeksRota']->pluck('totalhours')->sum();
 
+        foreach($data['DaysOfWeek'] as $day){
+            $data[$day.'OneRolesFOH'] = array_count_values($data['ThisWeeksRota']->where(strtolower($day).'roleone','=','FOH')->pluck(strtolower($day).'roleone')->toArray());
+            $data[$day.'TwoRolesFOH'] = array_count_values($data['ThisWeeksRota']->where(strtolower($day).'roletwo','=','FOH')->pluck(strtolower($day).'roletwo')->toArray());
+            $data[$day.'OneRolesHK'] = array_count_values($data['ThisWeeksRota']->where(strtolower($day).'roleone','=','HK')->pluck(strtolower($day).'roleone')->toArray());
+            $data[$day.'TwoRolesHK'] = array_count_values($data['ThisWeeksRota']->where(strtolower($day).'roletwo','=','HK')->pluck(strtolower($day).'roletwo')->toArray());
+            $data[$day.'OneRolesKIT'] = array_count_values($data['ThisWeeksRota']->where(strtolower($day).'roleone','=','KIT')->pluck(strtolower($day).'roleone')->toArray());
+            $data[$day.'TwoRolesKIT'] = array_count_values($data['ThisWeeksRota']->where(strtolower($day).'roletwo','=','KIT')->pluck(strtolower($day).'roletwo')->toArray());
 
+        }
         //dd($data);
 
         return view('admin.rota.index', $data);

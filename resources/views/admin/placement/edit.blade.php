@@ -25,6 +25,34 @@
                                         <div class="invalid-feedback">{{$message}}</div>
                                         @enderror
                                     </div>
+                                    <div class="form-group">
+                                        <label for="short">Short Code for placement</label>
+                                        <input type="text" class="form-control @error('short') is-invalid @enderror"
+                                               name="short" id="short" aria-describedby="helpId" maxlength="3"
+                                               value="{{$placement->short}}">
+                                        @error('short')
+                                        <div class="invalid-feedback">{{$message}}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="colour" class="col-form-label col-sm-3">Colour</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="colour" id="colour">
+                                                <option value={{$placement->getRawOriginal('colour')}}>{{$placement->getRawOriginal('colour')}}</option>
+
+                                            @foreach ($Colours as $item)
+                                                @if($item == $placement->getRawOriginal('colour'))
+                                                    @else
+                                                    <option value={{$item}}>{{$item}}</option>
+                                                    @endif
+                                                @endforeach
+
+                                            </select>
+                                            @error('colour')
+                                            <div class="invalid-feedback">{{$message}}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <button type="submit" class="btn btn-primary float-right">
                                         Edit {{$placement->name}}</button>
                         </form>

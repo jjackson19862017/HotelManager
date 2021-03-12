@@ -223,13 +223,14 @@
                                 <label for="role" class="col-form-label col-sm-3">Name</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" name="role" id="role">
-                                        @foreach ($user->roles as $user_role)
-                                            @if ($user_role->slug == $user_role->slug)
+
                                                 <option value="{{$user_role->id}}">{{$user_role->name}}</option>
-                                            @endif
-                                        @endforeach
+
                                         @foreach ($roles as $role)
+                                            @if($role->id == $user_role->id)
+                                                @else
                                             <option value="{{$role->id}}">{{$role->name}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>

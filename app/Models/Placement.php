@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Libraries\General;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -23,6 +24,11 @@ class Placement extends Model implements Auditable
     public function rotas(): BelongsToMany
     {
         return $this->belongsToMany(Rota::class);
+    }
+
+    public static function getColourAttribute($colour)
+    {
+        return General::ColourSelection($colour);
     }
 
 }

@@ -60,21 +60,21 @@ class CreateRotasTable extends Migration
             $table->time('sundaystarttwo')->nullable();
             $table->time('sundayfinishtwo')->nullable();
             $table->string('sundayroletwo')->nullable();
-            $table->time('mondayhoursone')->nullable();
-            $table->time('mondayhourstwo')->nullable();
-            $table->time('tuesdayhoursone')->nullable();
-            $table->time('tuesdayhourstwo')->nullable();
-            $table->time('wednesdayhoursone')->nullable();
-            $table->time('wednesdayhourstwo')->nullable();
-            $table->time('thursdayhoursone')->nullable();
-            $table->time('thursdayhourstwo')->nullable();
-            $table->time('fridayhoursone')->nullable();
-            $table->time('fridayhourstwo')->nullable();
-            $table->time('saturdayhoursone')->nullable();
-            $table->time('saturdayhourstwo')->nullable();
-            $table->time('sundayhoursone')->nullable();
-            $table->time('sundayhourstwo')->nullable();
-            $table->time('totalhours')->nullable();
+            $table->decimal('mondayhoursone',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('mondayhourstwo',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('tuesdayhoursone',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('tuesdayhourstwo',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('wednesdayhoursone',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('wednesdayhourstwo',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('thursdayhoursone',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('thursdayhourstwo',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('fridayhoursone',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('fridayhourstwo',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('saturdayhoursone',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('saturdayhourstwo',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('sundayhoursone',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('sundayhourstwo',$precision = 4, $scale = 2)->nullable();
+            $table->decimal('totalhours',$precision = 4, $scale = 2)->nullable();
             // Sick Days Taken
             $table->integer('sickdays')->nullable()->unsigned()->default(0);
             // Holiday Days Taken

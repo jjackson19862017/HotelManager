@@ -13,10 +13,12 @@ class CreatePlacementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('placement', function (Blueprint $table) {
+        Schema::create('placements', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->string('slug')->unique();
+            $table->string('short')->unique();
+            $table->enum('colour',['White','Blue','Gray','Green','Red','Yellow','Cyan','Black','Light Gray']);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -29,6 +31,6 @@ class CreatePlacementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('placement');
+        Schema::dropIfExists('placements');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\General;
 use App\Models\Placement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -9,25 +10,31 @@ use Illuminate\Support\Str;
 class PlacementController extends Controller
 {
     //
-    public function index() {
+    public function index()
+    {
         $data = [];
         $data['placements'] = Placement::all();
         return view('admin.placement.index', $data);
     }
 
-    public function create() {
-        return view('admin.placement.create');
+    public function create()
+    {
+        $data = [];
+        $data['Colours'] = General::getEnumValues('placements','colour');
+        return view('admin.placement.create', $data);
     }
 
     public function store(Request $request)
     {
         request()->validate([
-            'name' =>['required']
+            'name' => ['required']
         ]);
         // Takes the name input and creates the slug input all in lowercase and changes the spaces for -'s
         Placement::create([
-            'name'=> Str::ucfirst(request('name')),
-            'slug'=> Str::of(Str::lower(request('name')))->slug('-')
+            'name' => Str::ucfirst(request('name')),
+            'short' => Str::upper(request('short')),
+            'slug' => Str::of(Str::lower(request('name')))->slug('-'),
+            'colour' => request('colour'),
         ]);
         $request->session()->flash('message', 'Placement Created: ' . $request->name);
         $request->session()->flash('text-class', 'text-success');
@@ -39,15 +46,20 @@ class PlacementController extends Controller
     {
         $data = [];
         $data['placement'] = $placement;
+        $data['Colours'] = General::getEnumValues('placements','colour');
+
         return view('admin.placement.edit', $data);
     }
 
     public function update(Request $request, Placement $placement)
     {
         $placement->name = Str::ucfirst(request('name'));
+        $placement->short = Str::upper(request('short'));
         $placement->slug = Str::of(request('name'))->slug('-');
+        $placement->colour = request('colour');
 
-        if($placement->isDirty('name')){ // info If something has changed in the form.
+
+        if ($placement->isDirty()) { // info If something has changed in the form.
             $request->session()->flash('message', 'Placement Updated: ' . $placement->name);
             $request->session()->flash('text-class', 'text-success');
             $placement->save();
@@ -59,7 +71,8 @@ class PlacementController extends Controller
         return redirect()->route('placement.index');
     }
 
-    public function destroy(Request $request, Placement $placement){
+    public function destroy(Request $request, Placement $placement)
+    {
         // Delete Position
         $placement->delete();
         $request->session()->flash('message', 'Placement was Deleted...');

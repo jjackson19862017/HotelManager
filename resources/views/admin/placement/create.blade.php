@@ -23,6 +23,30 @@
                                         <div class="invalid-feedback">{{$message}}</div>
                                         @enderror
                                     </div>
+                                    <div class="form-group">
+                                        <label for="short">Short Code for placement</label>
+                                        <input type="text" class="form-control @error('short') is-invalid @enderror"
+                                               name="short" id="short" aria-describedby="helpId" maxlength="3"
+                                               placeholder="Short name for Placement">
+                                        @error('name')
+                                        <div class="invalid-feedback">{{$message}}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="colour" class="col-form-label col-sm-3">Colour</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" name="colour" id="colour">
+                                                @foreach ($Colours as $item)
+                                                    <option
+                                                        value={{$item}}>{{$item}}</option>
+                                                @endforeach
+
+                                            </select>
+                                            @error('colour')
+                                            <div class="invalid-feedback">{{$message}}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
 
                                     <button type="submit" class="btn btn-primary float-right">Add Placement</button>
 

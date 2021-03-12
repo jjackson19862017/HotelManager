@@ -35,11 +35,6 @@ class Staff extends Model implements Auditable
         return $this->hasMany('App\Models\Holidays');
     }
 
-    public function rotas(){
-        // Creates a One to Many relationship with Staff <-> Rota
-        return $this->hasMany('App\Models\Rota');
-    }
-
     public function dailysales(){
         // Creates a One to Many relationship with Staff <-> Holidays
         return $this->hasMany('App\Models\DailySales');

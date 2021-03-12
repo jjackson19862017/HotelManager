@@ -7,47 +7,55 @@
                     <div class="card-header">
                         <i class="fas fa-table mr-1"></i>
                         {{$role->name}} Role <span class="float-right"><a name="" id="" class="btn btn-success btn-sm"
-                                                           data-toggle="modal" data-target="#editRoleModel"
-                                                           role="button">Edit {{$role->name}} - Role</a></span>
+                                                                          data-toggle="modal"
+                                                                          data-target="#editRoleModel"
+                                                                          role="button">Edit {{$role->name}} - Role</a></span>
                     </div>
                     <div class="card-body">
                         @if(!$permissions->isEmpty())
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th class="w-90">Name</th>
-                                    <th>Options</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                @foreach ($permissions as $permission)
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered" id="dataTable" width="100%"
+                                       cellspacing="0">
+                                    <thead class="thead-dark">
                                     <tr>
-                                        <td >
-                                            {{$permission->name}}</td>
-                                        <td class=>@if (!$role->permissions->contains($permission))
-                                                <form action="{{route('role.permission.attach', $role)}}" method="post">
-                                                    @method('PUT')
-                                                    @csrf
-                                                        <input type="hidden" name="permission" id="permission" value="{{$permission->id}}">
-                                                    <button type="submit" class="btn btn-primary btn-block">Attach</button>
-                                                </form>
-                                            @else
-                                                <form action="{{route('role.permission.detach', $role)}}" method="post">
-                                                    @method('PUT')
-                                                    @csrf
-                                                        <input type="hidden" name="permission" id="permission" value="{{$permission->id}}">
-                                                    <button type="submit" class="btn btn-danger btn-block">Detach</button>
-                                                </form>
-                                            @endif</td>
+                                        <th class="w-90">Name</th>
+                                        <th>Options</th>
                                     </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+
+                                    <tbody>
+                                    @foreach ($permissions as $permission)
+                                        <tr>
+                                            <td>
+                                                {{$permission->name}}</td>
+                                            <td class=>@if (!$role->permissions->contains($permission))
+                                                    <form action="{{route('role.permission.attach', $role)}}"
+                                                          method="post">
+                                                        @method('PUT')
+                                                        @csrf
+                                                        <input type="hidden" name="permission" id="permission"
+                                                               value="{{$permission->id}}">
+                                                        <button type="submit" class="btn btn-primary btn-block">Attach
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <form action="{{route('role.permission.detach', $role)}}"
+                                                          method="post">
+                                                        @method('PUT')
+                                                        @csrf
+                                                        <input type="hidden" name="permission" id="permission"
+                                                               value="{{$permission->id}}">
+                                                        <button type="submit" class="btn btn-danger btn-block">Detach
+                                                        </button>
+                                                    </form>
+                                                @endif</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         @else
-                        <h3>No Data to display</h3>
+                            <h3>No Data to display</h3>
                         @endif
                     </div>
                 </div>
@@ -55,7 +63,8 @@
         </div>
 
         <!-- Edit Role Modal-->
-        <div class="modal fade" id="editRoleModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"aria-hidden="true">
+        <div class="modal fade" id="editRoleModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

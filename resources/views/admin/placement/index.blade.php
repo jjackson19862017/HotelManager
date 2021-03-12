@@ -6,8 +6,9 @@
                 <div class="card mb-4 w-100">
                     <div class="card-header">
                         <i class="fas fa-table mr-1"></i>
-                        Placements <span class="float-right"><a name="" id="" class="btn btn-success btn-sm" href="{{route('placement.create')}}"
-                                                                 >Create Placement</a></span>
+                        Placements <span class="float-right"><a name="" id="" class="btn btn-success btn-sm"
+                                                                href="{{route('placement.create')}}"
+                            >Create Placement</a></span>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -15,19 +16,25 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th style="width:50px;">Edit</th>
+                                    <th style="width:50px;">Short</th>
                                     <th>Name</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                    @foreach ($placements as $placement)
-                                        <tr class="h3">
-                                            <td>@if($placement->name != "Off" && $placement->name != "Sick" && $placement->name != "Holiday" )<a class="align-content-center btn btn-success btn-sm" href="{{route('placement.edit', $placement->id)}}"><i class="fas fa-edit"></i>
+                                @foreach ($placements as $placement)
+                                    <tr class="h3 ">
+                                        <td>@if($placement->name != "Off" && $placement->name != "Sick" && $placement->name != "Holiday" && $placement->name != "Housekeeping" && $placement->name != "Kitchen" && $placement->name != "Front Of House" )
+                                                <a class="align-content-center btn btn-success btn-sm"
+                                                   href="{{route('placement.edit', $placement->id)}}"><i
+                                                        class="fas fa-edit"></i>
                                                 </a>@endif</td>
-                                            <td >{{$placement->name}}</td>
-                                        </tr>
 
-                                    @endforeach
+                                        <td class="{{$placement->colour }}">{{$placement->short}}</td>
+                                        <td class="{{$placement->colour }}">{{$placement->name}}</td>
+                                    </tr>
+
+                                @endforeach
 
                                 </tbody>
                             </table>
