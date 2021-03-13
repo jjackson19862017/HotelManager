@@ -16,7 +16,7 @@ use App\Models\User;
 */
 
 
-Route::get('/audit', [App\Http\Controllers\AdminController::class, 'auditTime'])->name('audit.index')->middleware('owner');
+Route::get('/audit', [App\Http\Controllers\AuditController::class, 'index'])->name('audit.index')->middleware('owner');
 
 Auth::routes();
 Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('goodbye');

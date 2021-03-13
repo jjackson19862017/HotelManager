@@ -4,10 +4,13 @@
             <div class="row">
                 <div class="card mb-4 w-100">
                     <div class="card-header bg-dark text-white h4">
-                        {{$hotel->name}} - Week Commencing: {{date('l jS M Y', strtotime($IsAMonday))}} <small class="float-right">Total Paid for Hours: {{$ThisWeeksTotalHours}}</small>
+                        {{$hotel->name}} - Week Commencing: {{date('l jS M Y', strtotime($IsAMonday))}} @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))<small class="float-right">Total Paid Hours: {{$ThisWeeksTotalHours}}</small>@endif
                     </div>
                     <div class="card-body">
-
+                    @if($ThisWeeksRota->isEmpty())
+                            <h5 class="card-title">No one has been added to the rota for this week.</h5>
+                            <a href="{{route('hotel.staff.index',$hotel->id)}}" class="btn btn-dark"><i class="far fa-question-circle"></i> Add Someone <i class="far fa-question-circle"></i></a>
+                        @else
                         <table class="table table-sm table-responsive-sm text-center">
                             <thead class="thead-dark">
                             <tr>
@@ -15,18 +18,18 @@
                                 @foreach ($DaysOfWeek as $day)
                                     <th>{{$day}}</th>
                                 @endforeach
-                                <th>hours</th>
+                                <th>Hours</th>
 
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($ThisWeeksRota as $rota)
                                 <tr>
-                                    <td rowspan="3" class="align-middle" style="width: 100px;">
+                                    <td rowspan="2" class="align-middle" style="width: 100px;">
                                         @if(auth()->user()->userHasRole($hotel->slug. ".manager")||auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
-                                        <a href="" class="">{{$rota->staff_id}}</a>
+                                        <a href="{{route('rota.edit',$rota->id)}}">{{$rota->Staffname}}</a>
                                         @else
-                                            {{$rota->staff_id}}
+                                            {{$rota->Staffname}}
                                             @endif
                                     </td>
                                     <td>{{$rota->mondaystartone}} @if(!$rota->mondaystartone == "")
@@ -62,6 +65,13 @@
                                             - @endif {{$rota->sundayfinishtwo}}</td>
                                 </tr>
                                 <tr>
+                                    <td><form class="text-center" action="{{route('rota.destroy', $rota->id)}}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-block btn-sm">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form></td>
                                     <td>
                                         @if($rota->mondayroleone == $rota->mondayroletwo)
                                             {{$rota->mondayroleone}}
@@ -259,7 +269,7 @@
 
 
                     </div>
-
+                    @endif
                 </div>
             </div>
         </div>

@@ -41,7 +41,7 @@
                                                 <option value={{$placement->getRawOriginal('colour')}}>{{$placement->getRawOriginal('colour')}}</option>
 
                                             @foreach ($Colours as $item)
-                                                @if($item == $placement->getRawOriginal('colour'))
+                                                @if($item == $placement->('colour'))
                                                     @else
                                                     <option value={{$item}}>{{$item}}</option>
                                                     @endif

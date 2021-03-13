@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Rota extends Model
+class Rota extends Model implements Auditable
 {
     use HasFactory;
-
+    use \OwenIt\Auditing\Auditable;
     // Allows Mass assignments.
     protected $guarded = [];
 
@@ -27,12 +28,22 @@ class Rota extends Model
         return $this->belongsToMany(Hotel::class);
     }
 
-    public function getStaffIdAttribute($id)
+    public function getStaffnameAttribute($id)
+    {
+        $id = $this->staff_id;
+        $forename = Staff::find($id)->forename;
+        $surname = Staff::find($id)->surname;
+        return $forename . " " . $surname;
+    }
+
+
+    public function setStaffnameAttribute($id)
     {
         $forename = Staff::find($id)->forename;
         $surname = Staff::find($id)->surname;
         return $forename . " " . $surname;
     }
+
 
     public function getMondayroleoneAttribute($id)
     {

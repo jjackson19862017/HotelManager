@@ -81,7 +81,6 @@ class CreateRotasTable extends Migration
             $table->integer('holidaydays')->nullable()->unsigned()->default(0);
             // Job Scheme
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

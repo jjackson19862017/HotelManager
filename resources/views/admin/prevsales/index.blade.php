@@ -81,14 +81,14 @@
                 </div>
             </div>
         </div>
-                @endsection
+    @endsection
 
-                @section('js')
-                    <script>
-                        $('#prev-sales a').on('click', function (e) {
-                            e.preventDefault()
-                            $(this).tab('show')
-                        })
-                    </script>
+    @section('js')
+        <script>
+            $('#prev-sales a').on('click', function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            })
+        </script>
     @endsection
 </x-admin-master>

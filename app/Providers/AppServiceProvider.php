@@ -37,5 +37,8 @@ class AppServiceProvider extends ServiceProvider
         View::share('status',General::getEnumValues('staff','status'));
         View::share('personalLicense',General::getEnumValues('staff','personallicense'));
         View::share('hotels',Hotel::all());
+
+
+
             }
 }

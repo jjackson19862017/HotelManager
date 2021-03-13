@@ -10,6 +10,7 @@ use App\Models\Staff;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -35,6 +36,9 @@ class RotaController extends Controller
             $data[$day.'TwoRolesKIT'] = array_count_values($data['ThisWeeksRota']->where(strtolower($day).'roletwo','=','KIT')->pluck(strtolower($day).'roletwo')->toArray());
 
         }
+
+        $data['ThisWeeksStaffsId'] = $data['ThisWeeksRota']->pluck('staff_id');
+
         //dd($data);
 
         return view('admin.rota.index', $data);
@@ -168,5 +172,40 @@ class RotaController extends Controller
         return redirect()->route('rota.index', $request->input('hotel'));
     }
 
+    public function edit($rota)
+    {
+        $data = [];
+        $data['Thisrota'] = Rota::whereId($rota)->first();
 
+        $data['staffs'] = Staff::find(Rota::whereId($rota)->select('staff_id')->first()); // Locates the Information on the Staff Member
+        $data['hotels'] = Hotel::all(); // Returns the list of Hotels
+        $data['DaysOfWeek'] = General::ArrayDayNames(); // Returns an array with Days of the Week
+        $data['IsAMonday'] = General::FindMeAMonday(Carbon::now()); // Find a Monday from Last Week
+
+        $data['AvailableDates'] = [];
+
+        // Fills the Array with 5 weeks worth of Mondays
+        for ($i = 0; $i <= 4; $i++) {
+            $data['AvailableDates'] = Arr::add($data['AvailableDates'], $i, Carbon::parse($data['IsAMonday'])->format('Y-m-d'));
+            $data['IsAMonday'] = Carbon::parse($data['IsAMonday'])->addWeek();
+        }
+
+        $data['placements'] = Placement::all(); // Returns the list of Placements
+
+        //dd($data);
+
+        return view('admin.rota.edit',$data);
+
+    }
+
+
+    public function destroy(Request $request, Rota $rota)
+    {
+        // Delete Hotel
+        $rota->delete();
+        $request->session()->flash('message', 'Removed from Rota.');
+        $request->session()->flash('text-class', 'text-danger');
+        return back();
+
+    }
 }
