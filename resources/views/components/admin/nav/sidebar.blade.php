@@ -44,23 +44,32 @@
                                     @endif
                                     <a class="nav-link" href="{{route('endofday.create')}}"><i
                                             class="fas fa-cash-register mr-2"></i> End Of Day</a>
-                                    @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
+
                                         <hr class="border border-white w-50 my-1">
-                                        <a class="nav-link" href="{{route('hotel.occupancy',$hotel->id)}}"><i class="fas fa-hotel mr-2"></i> Occupancy
-                                            Report</a>
-                                        <a class="nav-link" href="{{route('hotel.dailysales.index',$hotel->id)}}"><i class="fas fa-calendar-day mr-2"></i> Daily
-                                            Sales</a>
-                                        <a class="nav-link" href="{{route('hotel.prevsales.index',$hotel->id)}}"><i class="fas fa-calendar-alt mr-2"></i> Monthly
-                                            Sales</a>
-                                        <a class="nav-link" href="{{route('hotel.prevsales.weekly',$hotel->id)}}"><i class="fas fa-calendar-week mr-2"></i> Weekly
-                                            Sales</a>
-                                    @endif
-                                    <a class="nav-link" href="{{route('rota.index',$hotel->id)}}"><i class="fas fa-user-clock mr-2"></i> Rota</a>
+                                        <div class="sb-sidenav-menu-heading">Rota</div>
+                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota0])}}"><i class="fas fa-user-clock mr-2"></i>This Week</a>
+                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota1])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota1))}}</a>
+                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota2])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota2))}}</a>
+                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota3])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota3))}}</a>
+                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota4])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota4))}}</a>
+
+                                        @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
+                                            <hr class="border border-white w-50 my-1">
+                                            <a class="nav-link" href="{{route('hotel.occupancy',$hotel->id)}}"><i class="fas fa-hotel mr-2"></i> Occupancy
+                                                Report</a>
+                                            <a class="nav-link" href="{{route('hotel.dailysales.index',$hotel->id)}}"><i class="fas fa-calendar-day mr-2"></i> Daily
+                                                Sales</a>
+                                            <a class="nav-link" href="{{route('hotel.prevsales.index',$hotel->id)}}"><i class="fas fa-calendar-alt mr-2"></i> Monthly
+                                                Sales</a>
+                                            <a class="nav-link" href="{{route('hotel.prevsales.weekly',$hotel->id)}}"><i class="fas fa-calendar-week mr-2"></i> Weekly
+                                                Sales</a>
+                                        @endif
                                 </nav>
                             </div>
                         @else
                         @endif
                     @endforeach
+
 
 
                     <div class="sb-sidenav-menu-heading">Interface</div>

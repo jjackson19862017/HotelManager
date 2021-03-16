@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/hotels/endofday/update', [App\Http\Controllers\DailySalesController::class, 'update'])->name('endofday.update');
     Route::get('/hotels/endofday/{id}/edit', [App\Http\Controllers\DailySalesController::class, 'edit'])->name('endofday.edit');
 
-    Route::get('/hotels/{hotel}/rota', [App\Http\Controllers\RotaController::class, 'index'])->name('rota.index');
+    Route::get('/hotels/{hotel}/{rota}/rota', [App\Http\Controllers\RotaController::class, 'index'])->name('rota.index');
     Route::post('/hotels/rota/store', [App\Http\Controllers\RotaController::class, 'store'])->name('rota.store');
     Route::get('/hotels/{hotel}/rota/create', [App\Http\Controllers\RotaController::class, 'create'])->name('rota.create');
     Route::get('/hotels/{rota}/rota/edit', [App\Http\Controllers\RotaController::class, 'edit'])->name('rota.edit');

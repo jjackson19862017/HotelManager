@@ -4,8 +4,7 @@
             <div class="row">
                 <div class="card mb-4 w-100">
                     <div class="card-header bg-dark text-white h4">
-                        {{$hotel->name}} - Week
-                        Commencing: {{date('l jS M Y', strtotime($IsAMonday))}} @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
+                        {{$hotel->name}} - Week Commencing: {{date('l jS M Y', strtotime($IsAMonday))}} @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
                             <small class="float-right">Total Paid Hours: {{$ThisWeeksTotalHours}}</small>@endif
                     </div>
                     <div class="card-body">

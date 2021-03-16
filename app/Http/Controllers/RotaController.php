@@ -17,13 +17,13 @@ use Illuminate\Validation\Rule;
 class RotaController extends Controller
 {
     //
-    public function index(Hotel $hotel)
+    public function index(Hotel $hotel, $rota)
     {
         $data = [];
         $data['hotel'] = $hotel;
         $data['Placements'] = Placement::all();
         $data['DaysOfWeek'] = General::ArrayDayNames();
-        $data['IsAMonday'] = General::FindMeAMonday(Carbon::now());
+        $data['IsAMonday'] = General::FindMeAMonday(Carbon::parse($rota));
         $data['ThisWeeksRota'] = Rota::whereWeekcommencing($data['IsAMonday'])->whereHotelId($hotel->id)->get();
         $data['ThisWeeksTotalHours'] = $data['ThisWeeksRota']->pluck('totalhours')->sum();
 

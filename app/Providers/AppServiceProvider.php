@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Libraries\General;
 use App\Models\Hotel;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -38,7 +39,11 @@ class AppServiceProvider extends ServiceProvider
         View::share('personalLicense',General::getEnumValues('staff','personallicense'));
         View::share('hotels',Hotel::all());
 
-
+        View::share('rota0',General::FindMeAMonday(Carbon::now()));
+        View::share('rota1',General::FindMeAMonday(Carbon::now()->addWeek()));
+        View::share('rota2',General::FindMeAMonday(Carbon::now()->addWeek(2)));
+        View::share('rota3',General::FindMeAMonday(Carbon::now()->addWeek(3)));
+        View::share('rota4',General::FindMeAMonday(Carbon::now()->addWeek(4)));
 
             }
 }
