@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/hotels/rota/store', [App\Http\Controllers\RotaController::class, 'store'])->name('rota.store');
     Route::get('/hotels/{hotel}/rota/create', [App\Http\Controllers\RotaController::class, 'create'])->name('rota.create');
     Route::get('/hotels/{rota}/rota/edit', [App\Http\Controllers\RotaController::class, 'edit'])->name('rota.edit');
+    Route::get('/hotels/{rota}/rota/clone', [App\Http\Controllers\RotaController::class, 'clone'])->name('rota.clone');
     Route::put('/hotels/{rota}/rota/update', [App\Http\Controllers\RotaController::class, 'update'])->name('rota.update');
     Route::delete('/hotels/{rota}/rota/delete', [App\Http\Controllers\RotaController::class, 'destroy'])->name('rota.destroy'); //info This allows rota placements to be deleted
 
