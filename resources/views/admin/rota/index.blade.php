@@ -4,15 +4,26 @@
             <div class="row">
                 <div class="card mb-4 w-100">
                     <div class="card-header bg-dark text-white h4">
-                        {{$hotel->name}} - Week Commencing: {{date('l jS M Y', strtotime($IsAMonday))}} @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
+                        {{$hotel->name}} - Week
+                        Commencing: {{date('l jS M Y', strtotime($IsAMonday))}} @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
                             <small class="float-right">Total Paid Hours: {{$ThisWeeksTotalHours}}</small>@endif
                     </div>
                     <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         @if($ThisWeeksRota->isEmpty())
                             <h5 class="card-title">No one has been added to the rota for this week.</h5>
                             <a href="{{route('hotel.staff.index',$hotel->id)}}" class="btn btn-dark"><i
                                     class="far fa-question-circle"></i> Add Someone <i
                                     class="far fa-question-circle"></i></a>
+                    </div>
                         @else
                             <table class="table table-sm table-responsive-sm text-center">
                                 <thead class="thead-dark">
@@ -71,7 +82,8 @@
                                         <td>
                                         <span><div>
 
-                                            <a href="{{route('rota.clone',$rota->id)}}" class="btn btn-primary btn-sm float-left"><i class="fas fa-plus"></i></a>
+                                            <a href="{{route('rota.clone',$rota->id)}}"
+                                               class="btn btn-primary btn-sm float-left"><i class="fas fa-plus"></i></a>
                                                 </div>
                                             <div>
                                             <form class="text-center" action="{{route('rota.destroy', $rota->id)}}"
@@ -281,6 +293,44 @@
 
                     </div>
                     @endif
+                    <div class="card-footer">
+
+                        @if($rk != 0)
+                        @switch($rk)
+                            @case(1)
+                                <a href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota0,'rk'=>0])}}" class="btn btn-sm btn-dark float-left"><i class="fas fa-arrow-alt-circle-left"></i> Prev Week</a>
+                            @break
+                            @case(2)
+                            <a href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota1,'rk'=>1])}}" class="btn btn-sm btn-dark float-left"><i class="fas fa-arrow-alt-circle-left"></i> Prev Week</a>
+                            @break
+                            @case(3)
+                                <a href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota2,'rk'=>2])}}" class="btn btn-sm btn-dark float-left"><i class="fas fa-arrow-alt-circle-left"></i> Prev Week</a>
+                            @break
+                            @case(4)
+                            <a href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota3,'rk'=>3])}}" class="btn btn-sm btn-dark float-left"><i class="fas fa-arrow-alt-circle-left"></i> Prev Week</a>
+                            @break
+                                @default
+                            @endswitch
+                        @endif
+
+                        @if($rk != 4)
+                                @switch($rk)
+                                    @case(0)
+                                    <a href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota1,'rk'=>1])}}" class="btn btn-sm btn-dark float-right">Next Week <i class="fas fa-arrow-alt-circle-right"></i></a>
+                                    @break
+                                    @case(1)
+                                    <a href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota2,'rk'=>2])}}" class="btn btn-sm btn-dark float-right">Next Week <i class="fas fa-arrow-alt-circle-right"></i></a>
+                                    @break
+                                    @case(2)
+                                    <a href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota3,'rk'=>3])}}" class="btn btn-sm btn-dark float-right">Next Week <i class="fas fa-arrow-alt-circle-right"></i></a>
+                                    @break
+                                    @case(3)
+                                    <a href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota4,'rk'=>4])}}" class="btn btn-sm btn-dark float-right">Next Week <i class="fas fa-arrow-alt-circle-right"></i></a>
+                                    @break
+                                    @default
+                                @endswitch
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

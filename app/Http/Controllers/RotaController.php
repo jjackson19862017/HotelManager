@@ -17,9 +17,10 @@ use Illuminate\Validation\Rule;
 class RotaController extends Controller
 {
     //
-    public function index(Hotel $hotel, $rota)
+    public function index(Hotel $hotel, $rota, $rk)
     {
         $data = [];
+        $data['rk'] = $rk;
         $data['hotel'] = $hotel;
         $data['Placements'] = Placement::all();
         $data['DaysOfWeek'] = General::ArrayDayNames();
@@ -38,8 +39,10 @@ class RotaController extends Controller
 
         $data['ThisWeeksStaffsId'] = $data['ThisWeeksRota']->pluck('staff_id');
 
-        //dd($data);
-
+        for($i=0;$i<=4;$i++){
+            $data['RotaList'][$i] = General::FindMeAMonday(Carbon::now()->addWeek($i));
+        }
+//dd($data);
         return view('admin.rota.index', $data);
     }
 
@@ -316,9 +319,27 @@ class RotaController extends Controller
     {
         $data = [];
         $data['oldRota'] = Rota::find($rota);
-        $data['oldweek'] = $data['oldRota']->value('weekcommencing');
+        $staffid = Rota::whereId($rota)->value('staff_id');
+        $hotel = Rota::whereId($rota)->value('hotel_id');
+        $newdate = Carbon::parse(Rota::whereId($rota)->value('weekcommencing'))->addWeek();
+        $data['oldweek'] = Rota::whereId($rota)->value('weekcommencing');
         $data['newRota'] = $data['oldRota']->replicate();
         $data['newRota']->weekcommencing = Carbon::parse($data['oldweek'])->addWeek();
+
+        $validator = Validator::make($request->all(), [
+            'WeekCommencing' => Rule::unique('rotas')->where(function ($query) use ($staffid,$hotel,$newdate) {
+                return $query->where('staff_id', '=', $staffid)->where('hotel_id', '=', $hotel)->where('weekcommencing','=',$newdate);
+            }),
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        //dd($validator);
+//dd($data);
         $data['newRota']->save();
 
         $request->session()->flash('message', 'Cloned Rota for Next Week.');

@@ -47,11 +47,11 @@
 
                                         <hr class="border border-white w-50 my-1">
                                         <div class="sb-sidenav-menu-heading">Rota</div>
-                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota0])}}"><i class="fas fa-user-clock mr-2"></i>This Week</a>
-                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota1])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota1))}}</a>
-                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota2])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota2))}}</a>
-                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota3])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota3))}}</a>
-                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota4])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota4))}}</a>
+                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota0,'rk'=>0])}}"><i class="fas fa-user-clock mr-2"></i>This Week</a>
+                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota1,'rk'=>1])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota1))}}</a>
+                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota2,'rk'=>2])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota2))}}</a>
+                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota3,'rk'=>3])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota3))}}</a>
+                                        <a class="nav-link" href="{{route('rota.index',['hotel'=>$hotel->id,'rota' => $rota4,'rk'=>4])}}"><i class="fas fa-user-clock mr-2"></i>{{date('jS F',strtotime($rota4))}}</a>
 
                                         @if(auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
                                             <hr class="border border-white w-50 my-1">
