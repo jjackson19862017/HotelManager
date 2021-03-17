@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Libraries\General;
+use App\Models\Holidays;
 use App\Models\Hotel;
 use App\Models\Placement;
 use App\Models\Rota;
@@ -25,6 +26,9 @@ class RotaController extends Controller
         $data['Placements'] = Placement::all();
         $data['DaysOfWeek'] = General::ArrayDayNames();
         $data['IsAMonday'] = General::FindMeAMonday(Carbon::parse($rota));
+        $data['IsASunday'] = date('Y-m-d', strtotime(Carbon::parse($data['IsAMonday'])->addDays(6)));
+        $data['NextMonday'] = date('Y-m-d', strtotime(Carbon::parse($data['IsAMonday'])->addWeek()));
+        $data['NextSunday'] = date('Y-m-d', strtotime(Carbon::parse($data['IsASunday'])->addWeek()));
         $data['ThisWeeksRota'] = Rota::whereWeekcommencing($data['IsAMonday'])->whereHotelId($hotel->id)->get();
         $data['ThisWeeksTotalHours'] = $data['ThisWeeksRota']->pluck('totalhours')->sum();
 
@@ -39,9 +43,31 @@ class RotaController extends Controller
 
         $data['ThisWeeksStaffsId'] = $data['ThisWeeksRota']->pluck('staff_id');
 
-        for($i=0;$i<=4;$i++){
+        // Generates an array for outputing this weeks Monday and the next four Mondays.
+        for ($i = 0; $i <= 4; $i++) {
             $data['RotaList'][$i] = General::FindMeAMonday(Carbon::now()->addWeek($i));
         }
+
+
+        // Reads the Holiday Table to see if there are any holidays coming up for the week in the Rota.
+
+
+        $data['AllHolidays'] = Holidays::whereDate('start', '>=', $data['IsAMonday'])->get();
+        $data['ThisWeeksHolidays'] = Holidays::whereBetween('start', [$data['IsAMonday'], $data['IsASunday']])->get();
+        $data['Holidays'] = [];
+        foreach ($data['AllHolidays'] as $hol) {
+            $staffsHotel = Staff::whereId($hol['staff_id'])->value('hotel_id');
+            $hotel->id;
+            if ($hotel->id == $staffsHotel) {
+                $data['Holidays'] = Holidays::whereBetween('start', [$data['IsAMonday'], $data['NextSunday']])->get();
+                //$data['MidWeekHolidays'] = $data['Holidays']->where('finish','<=',$data['IsAMonday']);
+                $data['Upcoming'] = Holidays::whereBetween('start', [$data['NextMonday'], $data['NextSunday']])->get();
+                $data['StaffOnHoliday'] = $hol->staff_id;
+            }
+
+
+        }
+
 //dd($data);
         return view('admin.rota.index', $data);
     }
@@ -171,7 +197,7 @@ class RotaController extends Controller
         $newId = Rota::create($input)->id;
         $request->session()->flash('message', 'Rota was Created... ');
         $request->session()->flash('text-class', 'text-success');
-        return redirect()->route('rota.index', $request->input('hotel'));
+        return redirect()->route('rota.index', $request->input('hotel',0));
     }
 
     public function edit($rota)
@@ -301,7 +327,7 @@ class RotaController extends Controller
         $rota->whereId($rota->id)->update($input);
         $request->session()->flash('message', 'Rota for ' . $staffname . ' on ' . $request->input('WeekCommencing') . ' Updated.');
         $request->session()->flash('text-class', 'text-success');
-        return redirect()->route('rota.index', $request->input('hotel'));
+        return redirect()->route('rota.index', $request->input('hotel'),0);
     }
 
 
@@ -326,25 +352,27 @@ class RotaController extends Controller
         $data['newRota'] = $data['oldRota']->replicate();
         $data['newRota']->weekcommencing = Carbon::parse($data['oldweek'])->addWeek();
 
-        $validator = Validator::make($request->all(), [
-            'WeekCommencing' => Rule::unique('rotas')->where(function ($query) use ($staffid,$hotel,$newdate) {
-                return $query->where('staff_id', '=', $staffid)->where('hotel_id', '=', $hotel)->where('weekcommencing','=',$newdate);
-            }),
-        ]);
+        $data['NextWeeksRotaStaff'] = Rota::whereWeekcommencing($newdate)->whereStaffId($staffid)->value('staff_id');
+        $data['NextWeeksRotaHotel'] = Rota::whereWeekcommencing($newdate)->whereHotelId($hotel)->value('hotel_id');
 
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
+                if($data['NextWeeksRotaStaff'] == $staffid && $data['NextWeeksRotaHotel'] == $hotel) {
+                    $request->session()->flash('message', 'No action taken as they already have a rota for next week.');
+                    $request->session()->flash('text-class', 'text-danger');
+                } else {
+                    $data['newRota']->save();
+                    $request->session()->flash('message', 'Cloned Rota for Next Week.');
+                    $request->session()->flash('text-class', 'text-success');
+                }
 
-        //dd($validator);
-//dd($data);
-        $data['newRota']->save();
 
-        $request->session()->flash('message', 'Cloned Rota for Next Week.');
-        $request->session()->flash('text-class', 'text-success');
-return back();
+
+
+
+
+
+        //dd($data);
+
+        return back();
 
     }
 }
