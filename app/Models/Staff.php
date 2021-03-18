@@ -59,4 +59,8 @@ class Staff extends Model implements Auditable
         return $value;
     }
 
+    public function getHAttribute(){
+        return var_dump($this);
+    }
+
 }

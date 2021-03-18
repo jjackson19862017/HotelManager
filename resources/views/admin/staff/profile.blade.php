@@ -7,6 +7,9 @@
                     <div class="card-header h3 bg-dark text-white">
                         <a class="btn btn-success btn-sm" href="{{route('staff.edit', $staff->id)}}"><i
                                 class="far fa-edit"></i></a> {{$staff->FullName}}
+                        @if(auth()->user()->userHasRole('super')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('owner'))
+                        <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal"><i class="fas fa-cog fa-fw"></i></a>
+                        @endif
                         <span class="float-right"><form action="{{route('staff.destroy', $staff->id)}}" method="post">
                                     @csrf
                                 @method('DELETE')
@@ -271,5 +274,54 @@
                         </div>
                     </div>
                 </div>
+
+
+                <!-- Edit Wages Modal-->
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit Wages</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"><i class="fas fa-times"></i></span></span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{route('staff.wages.update', $staff->id)}}" method="post"
+                                      class="form-horizontal">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Extra Options for {{$staff->fullname}}
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                <label for="wage" class="col-form-label col-sm-4">{{$staff->employmenttype}} wage:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="number"
+                                                           class="form-control @error('wage') is-invalid @enderror"
+                                                           name="wage" id="wage" aria-describedby="helpId"
+                                                           placeholder="">
+                                                    @error('wage')
+                                                    <div class="invalid-feedback">{{$message}}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-muted">
+                                            <button type="submit" class="btn btn-success float-right">Accept</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
     @endsection
 </x-admin-master>

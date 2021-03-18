@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Holidays;
+use App\Models\Hotel;
 use App\Models\PersonalLicense;
 use App\Models\Position;
 use App\Models\Staff;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -204,4 +206,36 @@ class StaffController extends Controller
 
         return redirect()->route('staff.profile', $staff);
     }
+
+    public function wages(){
+        $data = [];
+        //$data['staffs'] = Staff::orderBy('hotel_id', 'asc')->orderBy('employmenttype', 'asc')->orderBy('surname', 'asc')->get(); // Returns all the information back from the Staff Table
+        $data['staffs'] = Staff::all()->groupBy('hotel_id');
+
+        foreach ($data['staffs'] as $key => $item) {
+            $data['staffs'][$key]->hn = Hotel::whereId($key)->value('name');
+        }
+        $data['positions'] = Position::all(); // Returns all the information back from the Staff Table
+        return view('admin.staff.wages', $data);
+    }
+
+    public function wagesup(Staff $staff, Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'wage' => 'required|numeric',
+        ]);
+
+        $staffMember = Staff::find($staff->id);
+        if ($validator->fails()) {
+            $request->session()->flash('message', $staffMember->forename . ' wasnt updated.');
+            $request->session()->flash('text-class', 'text-danger');
+        }
+
+        $staff->wage = $request->input('wage');
+        $staff->save();
+        $request->session()->flash('message', $staffMember->forename . 's wage was updated to £' . $request->input('wage'));
+        $request->session()->flash('text-class', 'text-success');
+        return back();
+    }
 }
+

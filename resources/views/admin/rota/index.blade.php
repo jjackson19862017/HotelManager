@@ -18,27 +18,6 @@
                                 </ul>
                             </div>
                         @endif
-                        @if(!empty($H))
-                            <div class="my-0 mb-1">
-                                <ul class="list-group">
-                                    @foreach ($H as $Hol)
-                                        <li class="list-group-item list-group-item-warning">{{$Hol->Staff->fullname}}'s holiday starts
-                                            on the {{date('jS F Y',strtotime($Hol->start))}} & finishes on
-                                            the {{date('jS F Y',strtotime($Hol->finish))}}</li>
-                                    @endforeach
-                                        @foreach ($B as $Hol)
-                                            <li class="list-group-item list-group-item-success">{{$Hol->Staff->fullname}}'s holiday starts
-                                                on the {{date('jS F Y',strtotime($Hol->start))}} & finishes on
-                                                the {{date('jS F Y',strtotime($Hol->finish))}}</li>
-                                        @endforeach
-                                        @foreach ($S as $Hol)
-                                            <li class="list-group-item list-group-item-danger">{{$Hol->Staff->fullname}}'s holiday starts
-                                                on the {{date('jS F Y',strtotime($Hol->start))}} & finishes on
-                                                the {{date('jS F Y',strtotime($Hol->finish))}}</li>
-                                        @endforeach
-                                </ul>
-                            </div>
-                        @endif
                         @if($ThisWeeksRota->isEmpty())
                             <h5 class="card-title">No one has been added to the rota for this week.</h5>
                             <a href="{{route('hotel.staff.index',$hotel->id)}}" class="btn btn-dark"><i

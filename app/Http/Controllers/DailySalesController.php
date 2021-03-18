@@ -131,29 +131,6 @@ class DailySalesController extends Controller
         return redirect()->route('admin.index');
     }
 
-    public function allmoneysales()
-    {
-        $data = [];
-        $data['sales'] = DailySales::where('hotel', '=', 'Shard')->orderBy('date', 'desc')->paginate(15);
-        //dd($data['sales']);
-        return view('admin.hotels.sales.allmoneysales', $data);
-    }
-
-    public function yearlysetup()
-    {
-        $currentYear = Carbon::createFromDate(null)->format('Y');
-        $startDate = Carbon::createFromDate($currentYear, 1, 1);
-        $endDate = Carbon::createFromDate($currentYear, 12, 31);
-        while ($startDate <= $endDate) {
-            $insert = DailySales::insert(['date' => $startDate->format('Y-m-d'), 'user_id' => 0, 'hotel' => 'The Mill']);
-            //array_push($arrayYear,$startDate->format('Y-m-d'));
-            $startDate->addDay();
-        }
-
-        return redirect()->route('admin.hotels.sales.allmoneysales');
-    }
-
-
     public function edit(DailySales $id)
     {
         $data = [];

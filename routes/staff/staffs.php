@@ -20,5 +20,7 @@ Route::middleware('auth')->group(function(){
     Route::post('/staff/{staff}/holiday/store', [App\Http\Controllers\StaffController::class, 'storeHoliday'])->name('staffs.storeHoliday');
     Route::delete('/staff/{holiday}/holiday', [App\Http\Controllers\HolidaysController::class, 'destroy'])->name('holidays.destroy'); //info This allows users to delete Holidays in the admin area
 
+    Route::get('/staff/wages', [App\Http\Controllers\StaffController::class, 'wages'])->name('staff.wages');
+    Route::put('/staff/{staff}/wages/update', [App\Http\Controllers\StaffController::class, 'wagesup'])->name('staff.wages.update');
 
 });
