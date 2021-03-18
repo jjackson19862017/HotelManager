@@ -18,14 +18,24 @@
                                 </ul>
                             </div>
                         @endif
-                        @if(!empty($Holidays))
+                        @if(!empty($H))
                             <div class="my-0 mb-1">
                                 <ul class="list-group">
-                                    @foreach ($Holidays as $Hol)
+                                    @foreach ($H as $Hol)
                                         <li class="list-group-item list-group-item-warning">{{$Hol->Staff->fullname}}'s holiday starts
                                             on the {{date('jS F Y',strtotime($Hol->start))}} & finishes on
                                             the {{date('jS F Y',strtotime($Hol->finish))}}</li>
                                     @endforeach
+                                        @foreach ($B as $Hol)
+                                            <li class="list-group-item list-group-item-success">{{$Hol->Staff->fullname}}'s holiday starts
+                                                on the {{date('jS F Y',strtotime($Hol->start))}} & finishes on
+                                                the {{date('jS F Y',strtotime($Hol->finish))}}</li>
+                                        @endforeach
+                                        @foreach ($S as $Hol)
+                                            <li class="list-group-item list-group-item-danger">{{$Hol->Staff->fullname}}'s holiday starts
+                                                on the {{date('jS F Y',strtotime($Hol->start))}} & finishes on
+                                                the {{date('jS F Y',strtotime($Hol->finish))}}</li>
+                                        @endforeach
                                 </ul>
                             </div>
                         @endif
@@ -40,8 +50,8 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th>Staff</th>
-                                @foreach ($DaysOfWeek as $day)
-                                    <th>{{$day}}</th>
+                                @foreach ($DayNumbers as $day)
+                                    <th>{{date('D jS',strtotime($day))}}</th>
                                 @endforeach
                                 <th>Hours</th>
 

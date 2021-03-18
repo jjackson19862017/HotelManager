@@ -32,6 +32,12 @@ class RotaController extends Controller
         $data['ThisWeeksRota'] = Rota::whereWeekcommencing($data['IsAMonday'])->whereHotelId($hotel->id)->get();
         $data['ThisWeeksTotalHours'] = $data['ThisWeeksRota']->pluck('totalhours')->sum();
 
+        $count = 0;
+        foreach ($data['DaysOfWeek'] as $day) {
+            $data['DayNumbers'][$day]  = Carbon::parse($data['IsAMonday'])->addDay($count);
+            $count++;
+        }
+
         foreach ($data['DaysOfWeek'] as $day) {
             $data[$day . 'OneRolesFOH'] = array_count_values($data['ThisWeeksRota']->where(strtolower($day) . 'roleone', '=', 'FOH')->pluck(strtolower($day) . 'roleone')->toArray());
             $data[$day . 'TwoRolesFOH'] = array_count_values($data['ThisWeeksRota']->where(strtolower($day) . 'roletwo', '=', 'FOH')->pluck(strtolower($day) . 'roletwo')->toArray());
@@ -51,22 +57,28 @@ class RotaController extends Controller
 
         // Reads the Holiday Table to see if there are any holidays coming up for the week in the Rota.
 
-
+        // Gets all the Holidays After the Week Commencing
         $data['AllHolidays'] = Holidays::whereDate('start', '>=', $data['IsAMonday'])->get();
+
+        // Gets all the Holidays After the Week Commencing Until the Sunday of the Same Week
         $data['ThisWeeksHolidays'] = Holidays::whereBetween('start', [$data['IsAMonday'], $data['IsASunday']])->get();
         $data['Holidays'] = [];
         foreach ($data['AllHolidays'] as $hol) {
+            // Only Shows the Staff working for the selected Hotel.
             $staffsHotel = Staff::whereId($hol['staff_id'])->value('hotel_id');
-            $hotel->id;
             if ($hotel->id == $staffsHotel) {
-                $data['Holidays'] = Holidays::whereBetween('start', [$data['IsAMonday'], $data['NextSunday']])->get();
+                $data['Holidays'] = Holidays::whereBetween('start', [$data['IsAMonday'], $data['NextSunday']])->select('id','staff_id','start','finish')->get();
                 //$data['MidWeekHolidays'] = $data['Holidays']->where('finish','<=',$data['IsAMonday']);
                 $data['Upcoming'] = Holidays::whereBetween('start', [$data['NextMonday'], $data['NextSunday']])->get();
-                $data['StaffOnHoliday'] = $hol->staff_id;
             }
-
-
         }
+
+        foreach ($data['AllHolidays'] as $k => &$hol) {
+             $data['H'] = $hol->where('start','>=',$data['IsAMonday'])->get(); // Holiday
+             $data['B'] = $hol->where('finish','<=',$data['IsASunday'])->get(); // Back
+             $data['S'] = $hol->whereBetween('finish',[$data['NextMonday'],$data['NextSunday']])->get(); // Still on Holiday
+
+    }
 
 //dd($data);
         return view('admin.rota.index', $data);
