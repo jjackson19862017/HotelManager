@@ -41,7 +41,7 @@
                                 <tr>
                                     <td rowspan="2" class="align-middle" style="width: 100px;">
                                         @if(auth()->user()->userHasRole($hotel->slug. ".manager")||auth()->user()->userHasRole('owner')||auth()->user()->userHasRole('admin')||auth()->user()->userHasRole('super'))
-                                            <a href="{{route('rota.edit',$rota->id)}}">{{$rota->Staffname}}</a>
+                                            <a href="{{route('rota.edit',[$rota->id,$rk])}}">{{$rota->Staffname}}</a>
                                         @else
                                             {{$rota->Staffname}}
                                         @endif

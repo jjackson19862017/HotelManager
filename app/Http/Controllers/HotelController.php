@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Eventlocation;
 use App\Models\Holidays;
 use App\Models\Hotel;
 use App\Models\Position;
@@ -88,6 +89,7 @@ class HotelController extends Controller
 
         $data = [];
         $data['hotel'] = $hotel;
+        $data['els'] = Eventlocation::all();
         return view('admin.hotel.edit', $data);
     }
 
@@ -152,6 +154,18 @@ class HotelController extends Controller
         $request->session()->flash('message', 'ERASED: ' . $hotel->name);
         $request->session()->flash('text-class', 'text-warning');
         return redirect()->route('trashed.hotel.index');
+    }
+
+    public function eventlocation_attach(Hotel $hotel)
+    {
+        $hotel->eventlocations()->attach(request('el'));
+        return back();
+    }
+
+    public function eventlocation_detach(Hotel $hotel)
+    {
+        $hotel->eventlocations()->detach(request('el'));
+        return back();
     }
 
 }

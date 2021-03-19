@@ -3,16 +3,10 @@
         <div class="container-fluid">
             <br>
             <div class="row">
-                <div class="col-sm-12 col-md-8">
+                <div class="col-sm-12 col-md-7">
                     <div class="card mb-4 w-100">
                         <div class="card-header">
                             <h3><i class="fas fa-edit"></i> {{$hotel->name}}</h3>
-
-
-
-
-
-
                         </div>
                         <div class="card-body">
                             <form action="{{route('hotel.update', $hotel->id)}}" method="post" class="form-horizontal">
@@ -120,7 +114,7 @@
                                 </div>
                                 <hr>
 
-                                <button type="submit" class="btn btn-primary float-right">Edit {{$hotel->name}}
+                                <button type="submit" class="btn btn-primary float-right">Update {{$hotel->name}}
                                 </button>
                             </form>
                             <form class="float-left" action="{{route('hotel.destroy', $hotel->id)}}" method="post">
@@ -132,6 +126,60 @@
                             </form>
                         </div>
                     </div>
+
+                </div>
+                <div class="col-sm-12 col-md-5">
+                    <div class="card mb-4 w-100">
+                        <div class="card-header">
+                            <h3>Event Locations</h3>
+                        </div>
+                        <div class="card-body">
+                            @if(!$els->isEmpty())
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered" id="dataTable" width="100%"
+                                           cellspacing="0">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th class="w-90">Name</th>
+                                            <th>Options</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        @foreach ($els as $el)
+                                            <tr>
+                                                <td>
+                                                    {{$el->name}}</td>
+                                                <td class=>@if (!$hotel->eventlocations->contains($el))
+                                                        <form action="{{route('eventlocation.attach', $hotel)}}"
+                                                              method="post">
+                                                            @method('PUT')
+                                                            @csrf
+                                                            <input type="hidden" name="el" id="el"
+                                                                   value="{{$el->id}}">
+                                                            <button type="submit" class="btn btn-primary btn-block">Assign
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        <form action="{{route('eventlocation.detach', $hotel)}}"
+                                                              method="post">
+                                                            @method('PUT')
+                                                            @csrf
+                                                            <input type="hidden" name="el" id="el"
+                                                                   value="{{$el->id}}">
+                                                            <button type="submit" class="btn btn-danger btn-block">Remove
+                                                            </button>
+                                                        </form>
+                                                    @endif</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <h3>No Data to display</h3>
+                            @endif
+                        </div>
                 </div>
             </div>
         </div>

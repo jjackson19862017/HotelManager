@@ -45,5 +45,6 @@ class AppServiceProvider extends ServiceProvider
         View::share('rota3',General::FindMeAMonday(Carbon::now()->addWeek(3)));
         View::share('rota4',General::FindMeAMonday(Carbon::now()->addWeek(4)));
 
+
             }
 }

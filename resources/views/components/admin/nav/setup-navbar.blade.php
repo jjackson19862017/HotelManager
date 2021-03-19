@@ -33,6 +33,7 @@
                 <div class="dropdown-divider"></div>
 
                 <a class="dropdown-item" href="{{route('staff.wages')}}"><i class="fas fa-user-friends mr-1"></i> All Staff</a>
+                <a class="dropdown-item" href="{{route('eventlocation.index')}}"><i class="fas fa-user-friends mr-1"></i> Event Locations</a>
             @endif
     </div>
 </li>

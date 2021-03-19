@@ -30,6 +30,7 @@
                                 <div class="col-md-6">
                                     <input type="hidden" class="form-control" name="staffid" id="staffid"
                                            value="{{$staff->id}}">
+                                    <input type="hidden" class="form-control" name="rk" id="rk" value="0">
                                     <div class="form-group row">
                                         <label for="hotel" class="col-form-label col-sm-3">Hotel</label>
                                         <div class="col-sm-9">
@@ -48,7 +49,8 @@
                                     <div class="form-group row">
                                         <label for="WeekCommencing" class="col-form-label col-sm-3">Week Start</label>
                                         <div class="col-sm-9">
-                                            <select class="form-control" name="WeekCommencing" id="WeekCommencing">
+                                            <select class="form-control" name="WeekCommencing" id="WeekCommencing"
+                                                    onchange="RoleKey('WeekCommencing')">
                                                 @foreach ($AvailableDates as $item)
                                                     <option
                                                         value={{$item}}>{{date('jS F Y', strtotime($item))}} @if($loop->first)
@@ -257,6 +259,12 @@
 
                 }
                 ;
+            };
+
+            function RoleKey(WeekCommencing) {
+                // Gets the Rolekey from the Key of the WeekCommencing Select box.
+                var WeekCommencing = document.getElementById(WeekCommencing).selectedIndex;
+                document.getElementById("rk").value = WeekCommencing;
             };
 
             $(document).ready(function () {

@@ -19,6 +19,7 @@
                                     <th>Contact</th>
                                     <th>Address</th>
                                     <th>Rooms</th>
+                                    <th>Event Rooms</th>
 
                                 </tr>
                             </thead>
@@ -35,7 +36,11 @@
                                         </td>
                                         <td>{{$hotel->address}},<br>{{$hotel->town}},<br>{{$hotel->county}},<br>{{$hotel->postcode}}</td>
                                         <td>{{$hotel->numberOfRooms}}</td>
+                                        <td>
+                                            @foreach($hotel->eventlocations as $el)
 
+                                            {{$el->name}} <br>
+                                            @endforeach</td>
 
 
                                     </tr>

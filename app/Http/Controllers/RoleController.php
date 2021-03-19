@@ -81,4 +81,6 @@ class RoleController extends Controller
         $request->session()->flash('text-class', 'text-danger');
         return back();
     }
+
+
 }

@@ -205,16 +205,16 @@ class RotaController extends Controller
 
         $input['totalhours'] = $th;
 
-        //dd($input);
         $newId = Rota::create($input)->id;
         $request->session()->flash('message', 'Rota was Created... ');
         $request->session()->flash('text-class', 'text-success');
-        return redirect()->route('rota.index', $request->input('hotel',0));
+        return redirect()->route('rota.index', [$request->input('hotel'),$request->input('WeekCommencing'),$request->input('rk')]);
     }
 
-    public function edit($rota)
+    public function edit($rota,$rk)
     {
         $data = [];
+        $data['rk'] = $rk;
         $data['Thisrota'] = Rota::whereId($rota)->first();
 
         $data['staffs'] = Staff::find(Rota::whereId($rota)->select('staff_id')->first()); // Locates the Information on the Staff Member
@@ -308,7 +308,7 @@ class RotaController extends Controller
         foreach ($days as $day) {
             $input[strtolower($day) . 'roleone'] = $request->input($day . 'RoleOne');
             $input[strtolower($day) . 'roletwo'] = $request->input($day . 'RoleTwo');
-            if ($request->input($day . 'RoleOne') == "1" || $request->input($day . 'RoleOne') == "8" || $request->input($day . 'RoleOne') == "9") {
+            if ($request->input($day . 'RoleOne') == "1" && $request->input($day . 'RoleOne') == "8" && $request->input($day . 'RoleOne') == "9") {
                 $input[strtolower($day) . 'startone'] = Null;
                 $input[strtolower($day) . 'finishone'] = Null;
                 $input[strtolower($day) . 'hoursone'] = 0;
@@ -317,7 +317,7 @@ class RotaController extends Controller
                 $input[strtolower($day) . 'finishone'] = $request->input($day . 'FinishOne');
                 $input[strtolower($day) . 'hoursone'] = is_null($request->input($day . 'FinishOne')) && is_null($request->input($day . 'StartOne')) ? 0 : Carbon::parse($request->input($day . 'FinishOne'))->floatDiffInHours(Carbon::parse($request->input($day . 'StartOne')));
             }
-            if ($request->input($day . 'RoleTwo') == "1" || $request->input($day . 'RoleTwo') == "8" || $request->input($day . 'RoleTwo') == "9") {
+            if ($request->input($day . 'RoleTwo') == "1" && $request->input($day . 'RoleTwo') == "8" && $request->input($day . 'RoleTwo') == "9") {
                 $input[strtolower($day) . 'starttwo'] = Null;
                 $input[strtolower($day) . 'finishtwo'] = Null;
                 $input[strtolower($day) . 'hourstwo'] = 0;
@@ -335,11 +335,10 @@ class RotaController extends Controller
 
         $staffname = Staff::whereId($request->input('staffid'))->value('forename');
 
-
         $rota->whereId($rota->id)->update($input);
         $request->session()->flash('message', 'Rota for ' . $staffname . ' on ' . $request->input('WeekCommencing') . ' Updated.');
         $request->session()->flash('text-class', 'text-success');
-        return redirect()->route('rota.index', $request->input('hotel'),0);
+        return redirect()->route('rota.index', [$request->input('hotel'),$request->input('WeekCommencing'),$request->input('rk')]);
     }
 
 
@@ -369,7 +368,7 @@ class RotaController extends Controller
 
                 if($data['NextWeeksRotaStaff'] == $staffid && $data['NextWeeksRotaHotel'] == $hotel) {
                     $request->session()->flash('message', 'No action taken as they already have a rota for next week.');
-                    $request->session()->flash('text-class', 'text-danger');
+                    $request->session()->flash('text-class', 'text-warning');
                 } else {
                     $data['newRota']->save();
                     $request->session()->flash('message', 'Cloned Rota for Next Week.');

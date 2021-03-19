@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -32,6 +34,11 @@ class Hotel extends Model implements Auditable
     {
         // Creates a One to Many relationship with DailySales <-> Hotel
         return $this->belongsTo(DailySales::class);
+    }
+
+    public function eventlocations()
+    {
+        return $this->belongsToMany(Eventlocation::class);
     }
 
     public function getFullAddressAttribute()

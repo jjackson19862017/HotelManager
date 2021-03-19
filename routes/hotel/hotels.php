@@ -25,13 +25,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/hotels/{hotel}/{rota}/rota/{rk}', [App\Http\Controllers\RotaController::class, 'index'])->name('rota.index');
     Route::post('/hotels/rota/store', [App\Http\Controllers\RotaController::class, 'store'])->name('rota.store');
     Route::get('/hotels/{hotel}/rota/create', [App\Http\Controllers\RotaController::class, 'create'])->name('rota.create');
-    Route::get('/hotels/{rota}/rota/edit', [App\Http\Controllers\RotaController::class, 'edit'])->name('rota.edit');
+    Route::get('/hotels/{rota}/rota/edit/{rk}', [App\Http\Controllers\RotaController::class, 'edit'])->name('rota.edit');
     Route::get('/hotels/{rota}/rota/clone', [App\Http\Controllers\RotaController::class, 'clone'])->name('rota.clone');
     Route::put('/hotels/{rota}/rota/update', [App\Http\Controllers\RotaController::class, 'update'])->name('rota.update');
     Route::delete('/hotels/{rota}/rota/delete', [App\Http\Controllers\RotaController::class, 'destroy'])->name('rota.destroy'); //info This allows rota placements to be deleted
 
 
 });
+
 
 
 Route::middleware('owner')->group(function () {
@@ -54,6 +55,18 @@ Route::middleware('owner')->group(function () {
     Route::put('/hotels/placement/{placement}/update', [App\Http\Controllers\PlacementController::class, 'update'])->name('placement.update');
     Route::delete('/hotels/placement/{placement}/delete', [App\Http\Controllers\PlacementController::class, 'destroy'])->name('placement.destroy'); //info This allows hotels to delete hotels in the admin area
 
+
+    // Event Room Locations
+
+    Route::put('/hotels/{hotel}/attach', [App\Http\Controllers\HotelController::class, 'eventlocation_attach'])->name('eventlocation.attach');
+    Route::put('/hotels/{hotel}/detach', [App\Http\Controllers\HotelController::class, 'eventlocation_detach'])->name('eventlocation.detach');
+    Route::get('/el', [App\Http\Controllers\EventlocationController::class, 'index'])->name('eventlocation.index');
+    Route::post('/el', [App\Http\Controllers\EventlocationController::class, 'store'])->name('eventlocation.store');
+    Route::delete('/el/{el}', [App\Http\Controllers\EventlocationController::class, 'destroy'])->name('eventlocation.destroy');
+
+    Route::get('/el/{el}/edit', [App\Http\Controllers\EventlocationController::class, 'edit'])->name('eventlocation.edit');
+    Route::put('/el/{el}/update', [App\Http\Controllers\EventlocationController::class, 'update'])->name('eventlocation.update');
+    Route::delete('/el/{el}', [App\Http\Controllers\EventlocationController::class, 'destroy'])->name('eventlocation.destroy'); //info This allows hotels to delete hotels in the admin area
 
 
 });

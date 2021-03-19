@@ -27,11 +27,13 @@
                             @endif
 
 
-                            <form action="{{route('rota.update',$Thisrota->id)}}" method="post" class="form-horizontal">
+                            <form action="{{route('rota.update',[$Thisrota->id,$rk])}}" method="post" class="form-horizontal">
                                 @csrf
                                 @method('PUT')
                                 <div class="row">
                                     <div class="col-md-6">
+                                        <input type="hidden" class="form-control" name="rk" id="rk"
+                                               value="{{$rk}}">
                                         <input type="hidden" class="form-control" name="staffid" id="staffid"
                                                value="{{$Thisrota->staff_id}}">
                                         <div class="form-group row">
